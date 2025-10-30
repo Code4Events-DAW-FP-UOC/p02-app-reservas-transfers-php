@@ -2,7 +2,8 @@ name: FP064_P2_IslaTransfers
 
 services:
   web:
-    image: php:8.2-apache
+    # image: php:8.2-apache
+    build: .
     container_name: islatransfers_web
     ports:
       - "8080:80"

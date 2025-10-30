@@ -14,6 +14,7 @@ function getPDO() {
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ];
+        return new PDO($dsn, DB_USER, DB_PASS, $options);
     } catch (PDOException $e) {
         die ("Error de conexión a la base de datos: ". $e->getMessage());
     }

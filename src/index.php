@@ -11,4 +11,9 @@ try {
 } catch (Exception $e) {
     echo $e->getMessage();
 }
+
+require_once __DIR__ . '/controllers/ReservasController.php';
+
+$controller = new ReservasController();
+$controller->listado();
 ?>
