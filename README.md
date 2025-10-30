@@ -5,7 +5,7 @@
 Aplicación web para **reserva y gestión de transfers** (Producto 2 de la asignatura FP.064 - Desarrollo back-end con PHP).  
 Desarrollada en **PHP puro** (sin frameworks) siguiendo el patrón de arquitectura **MVC** y preparada para ejecutarse en contenedores Docker.
 
-- Proyecto para la asignatura FP.064 - Desarrollo back-end con PHP, UOC.
+- **Proyecto para la asignatura FP.064** - Desarrollo back-end con PHP, UOC.
 - **Repositorio:** https://github.com/Code4Events-DAW-FP-UOC/p02-app-reservas-transfers-php
 - **Rama actual:** `feature/mvc-estructura-base-xavi`
 - **Autor:** Xavi Miró
@@ -14,24 +14,21 @@ Desarrollada en **PHP puro** (sin frameworks) siguiendo el patrón de arquitectu
 ## Estructura de carpetas y archivos
 
 /islatransfers/
+├── src/ # Código fuente de la aplicación (MVC)
+│ ├── index.php
+│ ├── config/
+│ ├── controllers/
+│ ├── models/
+│ ├── views/
+│ ├── helpers/
+│ └── public/
+│ └── css/
+│ └── style.css
+├── database/ # Archivos SQL para importar la base de datos
+│ └── islatransfers.sql
 ├── docker-compose.yml # Orquestador de contenedores Docker
 ├── .gitignore # Exclusiones del repositorio Git
-├── README.md # Documentación del proyecto
-└── src/ # Código fuente (MVC)
-├── index.php
-├── config/
-│ └── config.php
-├── controllers/
-│ └── ReservasController.php
-├── models/
-│ └── Reserva.php
-├── views/
-│ └── reservas_listado.php
-├── helpers/
-│ └── utils.php
-└── public/
-└── css/
-└── style.css
+└── README.md # Documentación del proyecto
 
 **Notas:**
 
@@ -50,10 +47,6 @@ Desarrollada en **PHP puro** (sin frameworks) siguiendo el patrón de arquitectu
 ### Primeros pasos
 
 ```bash
-# Clona el repositorio y accede a la carpeta
-git clone https://github.com/TU_ORG/islatransfers.git
-cd islatransfers
-
 # Levanta los contenedores (web, BBDD y phpMyAdmin)
 docker-compose up -d
 ```
@@ -68,20 +61,30 @@ docker-compose up -d
 docker-compose down
 ```
 
+## Importar la base de datos
+
+1. Asegúrate de que los contenedores están en funcionamiento (docker-compose up -d).
+2. Accede a phpMyAdmin
+3. Seleccionar la base de datos.
+4. Ir a la pestaña "Importar".
+5. Seleccionar el archivo database/UOC_transfers-1-1.sql incluido en este repositorio.
+6. Pulsa "Continuar" para importar tablas y datos.
+
 ## ¿Qué se ha realizado hasta ahora?
 
 - Estructura base del proyecto creada siguiendo el patrón MVC, sin frameworks dentro de /src.
 - Configuración del entorno Docker: PHP 8.2 + Apache, MySQL 8, phpMyAdmin.
 - Configuración básica de Git y .gitignore (con comentarios explicativos).
 - README.md actualizado con estructura, instrucciones y notas para el equipo.
+- Carpeta /database añadida para almacenar el archivo SQL de la base de datos.
 - Test de funcionamiento:
   - La web muestra el mensaje desde index.php.
   - Se puede acceder a la base de datos MySQL y gestionarla desde phpMyAdmin.
+  - La base de datos facilitada por el consultor ha sido importada correctamente.
 - Rama creada siguiendo convención: `feature/mvc-estructura-base-xavi`.
 
 ## Siguientes pasos
 
-- Implementar la conexión a la base de datos en `/src/config/config.php`.
 - Desarrollar el primer flujo MVC (mostrar listado de reservas).
 - Ir añadiendo funcionalidad paso a paso (login, paneles, etc.).
 - Añadir autenticación (login) y paneles para usuarios y administradores.
