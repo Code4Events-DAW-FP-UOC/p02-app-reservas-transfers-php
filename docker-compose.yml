@@ -1,0 +1,47 @@
+name: FP064_P2_IslaTransfers
+
+services:
+  web:
+    image: php:8.2-apache
+    container_name: islatransfers_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./config:/var/www/html/config
+    depends_on:
+      - db
+    networks: [islatransfers_net]
+
+  db:
+    image: mysql:8.0
+    container_name: islatransfers_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: islatransfers
+      MYSQL_USER: islatransfers
+      MYSQL_PASSWORD: islatransfers
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks: [islatransfers_net]
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: islatransfers_pma
+    environment:
+      PMA_HOST: db
+      PMA_USER: islatransfers
+      PMA_PASSWORD: islatransfers
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    networks: [islatransfers_net]
+
+networks:
+  islatransfers_net:
+
+volumes:
+  db_data:
