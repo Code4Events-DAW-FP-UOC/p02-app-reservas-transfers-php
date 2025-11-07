@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar navbar-brand" href="/">
@@ -5,7 +11,14 @@
             Isla Transfers
         </a>
         <div class="d-flex">
-            <a href="/auth/login" class="btn btn-primary">Inicia sesión</a>
+            <?php if (!empty($_SESSION['user_id'])): ?>
+                <span class="navbar-text me-3">
+                    👤 <?= htmlspecialchars($_SESSION['user_name'] ?? '') ?>
+                </span>
+                <a href="/auth/logout" class="btn btn-outline-light">Desconectar</a>
+            <?php else: ?>
+                <a href="/auth/login" class="btn btn-primary">Inicia sesión</a>
+            <?php endif; ?>
         </div>
     </div>
 </nav>

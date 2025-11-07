@@ -19,7 +19,7 @@ class AuthController extends Controller
                 $_SESSION['user_name'] = $user['nombre'];
 
                 // Redirige al panel correspondiente
-                header('Location: /user/dashboard'); // puedes ajustar la ruta
+                header('Location: /user/dashboard');
                 exit;
             } else {
                 $error = "Correo o contraseña incorrectos.";
@@ -27,5 +27,14 @@ class AuthController extends Controller
         }
 
         $this->view('auth/login', ['error' => $error]);
+    }
+
+    public function logout()
+    {
+        session_start();
+        session_unset();
+        session_destroy();
+        header('Location: /auth/login');
+        exit;
     }
 }
