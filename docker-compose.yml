@@ -8,7 +8,10 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./:/var/www
+      - ./html:/var/www/html
+      - ./core:/var/www/core
+      - ./app:/var/www/app
+      - ./config:/var/www/config
     depends_on:
       - db
     networks: [islatransfers_net]
