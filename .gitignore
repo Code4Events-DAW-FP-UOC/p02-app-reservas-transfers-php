@@ -1,0 +1,9 @@
+# Ignora la carpeta de dades de MySQL
+/mysql_data
+
+# Ignora la carpeta de llibreries (quan la tinguis)
+/vendor
+
+# Ignora les carpetes de l'editor de codi
+/.vscode
+/.idea
