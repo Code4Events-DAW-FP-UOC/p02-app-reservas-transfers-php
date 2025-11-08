@@ -12,13 +12,14 @@ if (session_status() === PHP_SESSION_NONE) {
         </a>
         <div class="d-flex">
             <?php if (!empty($_SESSION['user_id'])): ?>
-                <span class="navbar-text me-3">
-                    👤 <?= htmlspecialchars($_SESSION['user_name'] ?? '') ?>
+                <span class="navbar-text me-3 text-white">
+                    <i class="bi bi-person-circle me-1"></i>
+                    <?= htmlspecialchars($_SESSION['user_name'] ?? '') ?>
                 </span>
-                <a href="/auth/logout" class="btn btn-outline-light">Desconectar</a>
+                <a href="/auth/logout" class="btn btn-primary">Desconectar</a>
             <?php else: ?>
                 <a href="/auth/login" class="btn btn-primary">Inicia sesión</a>
-            <?php endif; ?>
+                <?php endif; ?>/
         </div>
     </div>
 </nav>

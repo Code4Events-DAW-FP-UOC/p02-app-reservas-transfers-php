@@ -31,6 +31,9 @@ body {
   color: var(--color-bg) !important;
   letter-spacing: 1px;
 }
+.navbar-text {
+  color: var(--color-bg);
+}
 
 /* Botón principal */
 .btn-primary,
