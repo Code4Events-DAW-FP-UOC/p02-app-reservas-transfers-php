@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Login - Isla Transfers</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>Iniciar Sesión</h1>
-    
-    <?php
-    // Si la sesión tiene un mensaje de error, lo mostramos
-    if (isset($_SESSION['error_message'])) {
-        echo '<p style="color:red;">' . $_SESSION['error_message'] . '</p>';
-        unset($_SESSION['error_message']); // Lo limpiamos para no mostrarlo más
-    }
-    ?>
 
-    <form action="/login" method="POST">
-        <div>
-            <label for="email">Correo Electrónico:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div>
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Entrar</button>
-    </form>
-    <p>¿No tienes una cuenta? <a href="/register">Regístrate aquí</a></p>
+    <div class="form-container">
+        <h1>Iniciar Sesión</h1>
+        
+        <?php
+        if (isset($_SESSION['error_message'])) {
+            // 3. Afegim la classe d'error
+            echo '<div class="error-message">' . $_SESSION['error_message'] . '</div>';
+            unset($_SESSION['error_message']);
+        }
+        ?>
+
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Entrar</button>
+        </form>
+        <p>¿No tienes una cuenta? <a href="/register">Regístrate aquí</a></p>
+    </div>
+
 </body>
 </html>
