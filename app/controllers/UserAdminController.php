@@ -1,5 +1,5 @@
 <?php
-class UserController extends Controller
+class UserAdminController extends Controller
 {
     public function dashboard()
     {
@@ -12,6 +12,6 @@ class UserController extends Controller
             exit;
         }
         // Carga la vista del dashboard
-        $this->view('user/dashboard');
+        $this->view('userAdmin/dashboard');
     }
 }

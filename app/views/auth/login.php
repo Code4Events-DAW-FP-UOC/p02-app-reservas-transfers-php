@@ -18,7 +18,7 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">Entrar</button>
             <p class="mt-3 text-center">
-                ¿No tienes cuenta? <a href="/auth/register">Regístrate</a>
+                ¿No tienes cuenta? <a href="/auth/registro">Regístrate</a>
             </p>
         </form>
     </div>

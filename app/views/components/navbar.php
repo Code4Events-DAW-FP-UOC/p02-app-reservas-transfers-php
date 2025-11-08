@@ -16,6 +16,14 @@ if (session_status() === PHP_SESSION_NONE) {
                     <i class="bi bi-person-circle me-1"></i>
                     <?= htmlspecialchars($_SESSION['user_name'] ?? '') ?>
                 </span>
+                <!-- Menú dinámico según rol -->
+                <?php if ($_SESSION['user_rol'] === 'admin'): ?>
+                    <a href="/admin/panel" class="btn btn-outline-light me-2">Panel Admin</a>
+                <?php elseif ($_SESSION['user_rol'] === 'corporativo'): ?>
+                    <a href="/corporativo/panel" class="btn btn-outline-light me-2">Panel Corporativo</a>
+                <?php elseif ($_SESSION['user_rol'] === 'particular'): ?>
+                    <a href="/particular/panel" class="btn btn-outline-light me-2">Panel Usuario</a>
+                <?php endif; ?>
                 <a href="/auth/logout" class="btn btn-primary">Desconectar</a>
             <?php else: ?>
                 <a href="/auth/login" class="btn btn-primary">Inicia sesión</a>
