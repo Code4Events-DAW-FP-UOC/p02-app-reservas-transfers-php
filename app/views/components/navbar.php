@@ -12,6 +12,10 @@ if (session_status() === PHP_SESSION_NONE) {
         </a>
         <div class="d-flex align-items-center">
             <?php if (!empty($_SESSION['user_id'])): ?>
+                <!-- Si usuario logueado es admin: -->
+                <?php if ($_SESSION['user_rol'] === 'admin'): ?>
+                    <a href="/userAdmin/dashboard" class="btn btn-warning me-2">Panel administración</a>
+                <?php endif; ?>
                 <div class="dropdown">
                     <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-circle me-1"></i>
@@ -21,14 +25,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <li>
                             <a class="dropdown-item" href="/user/edit">Editar perfil</a>
                         </li>
-                        <!-- Opciones según rol -->
-                        <?php if ($_SESSION['user_rol'] === 'admin'): ?>
-                            <li><a class="dropdown-item" href="/userAdmin/dashboard">Panel administrador</a></li>
-                        <?php elseif ($_SESSION['user_rol'] === 'corporativo'): ?>
-                            <li><a class="dropdown-item" href="/userCorporativo/dashboard">Panel corporativo</a></li>
-                        <?php elseif ($_SESSION['user_rol'] === 'particular'): ?>
-                            <li><a class="dropdown-item" href="/userParticular/dashboard">Panel usuario</a></li>
-                        <?php endif; ?>
+                        <li><a class="dropdown-item" href="/user/misreservas">Ver mis reservas</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -39,6 +36,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         </li>
                     </ul>
                 </div>
+
             <?php else: ?>
                 <a href="/auth/login" class="btn btn-primary">Inicia sesión</a>
             <?php endif; ?>

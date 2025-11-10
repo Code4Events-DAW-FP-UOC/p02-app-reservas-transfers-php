@@ -4,8 +4,8 @@
 <div class="d-flex" style="min-height: 100vh;">
     <?php require __DIR__ . '/../components/sidebar.php'; ?>
     <main class="flex-grow-1 p-5">
-        <h2 class="mb-4">Panel de administración</h2>
-        <p>Bienvenido al panel de administración de Isla Transfers.</p>
+        <h2 class="mb-4">Listado de reservas</h2>
+        <p></p>
     </main>
 </div>
 
