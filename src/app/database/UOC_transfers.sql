@@ -23,6 +23,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `tranfer_hotel` (
 `id_hotel` int(11) NOT NULL,
 `id_zona` int(11) DEFAULT NULL,
+`nombre_hotel` varchar(100) NOT NULL,
 `Comision` int(11) DEFAULT NULL,
 `usuario` int(11) DEFAULT NULL,
 `password` varchar(100) NOT NULL
@@ -92,7 +93,8 @@ CREATE TABLE `transfer_viajeros` (
 `ciudad` varchar(100) NOT NULL,
 `pais` varchar(100) NOT NULL,
 `email` varchar(100) NOT NULL,
-`password` varchar(100) NOT NULL
+`password` varchar(100) NOT NULL,
+`rol` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 --
