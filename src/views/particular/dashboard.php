@@ -13,6 +13,14 @@
         .menu-item:hover { background: #28a745; color: white; transform: translateY(-3px); }
     </style>
 </head>
+<?php
+        if (isset($_SESSION['success_message'])) {
+            echo '<div style="background:#d4edda; color:#155724; padding:1rem; border-radius:5px; margin-bottom:1rem;">' 
+                 . $_SESSION['success_message'] . 
+                 '</div>';
+            unset($_SESSION['success_message']);
+        }
+        ?>
 <body>
     <div class="dashboard-container">
         <div class="header">

@@ -5,10 +5,12 @@ session_start();
 // 2. Incluim la configuració i els controladors necessaris
 require_once 'config/db.php';
 require_once 'controllers/AuthController.php';
+require_once 'controllers/AdminController.php';
 
 // 3. Instanciem el controlador d'autenticació
 // (Li passem la connexió $pdo que ve de db.php)
 $authController = new AuthController($pdo);
+$adminController = new AdminController($pdo);
 
 // 4. Obtenim la ruta de la URL (o 'home' per defecte)
 $route = $_GET['route'] ?? 'home';
@@ -77,7 +79,21 @@ switch ($route) {
         // Carreguem la vista del menú verd
         require_once 'views/particular/dashboard.php';
         break;
+    // RUTA PER VEURE EL FORMULARI
+    case 'admin/reserva/nueva':
+        $adminController->showNewReservaForm();
+        break;
 
+    // RUTA PER PROCESSAR EL FORMULARI (POST)
+    case 'admin/reserva/create':
+        if ($method === 'POST') {
+            $adminController->createReserva();
+        }
+        break;
+    // RUTA PER VEURE DETALLS (CONFIRMACIÓ)
+    case 'admin/reserva/detalles':
+        $adminController->showReservaDetails();
+        break;
     // --- ERROR 404 ---
     default:
         http_response_code(404);
