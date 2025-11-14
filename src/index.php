@@ -1,19 +1,40 @@
 <?php
+// 1. Iniciem la sessió per poder accedir a $_SESSION
 session_start();
+
+// 2. Incluim la configuració i els controladors necessaris
 require_once 'config/db.php';
 require_once 'controllers/AuthController.php';
 
+// 3. Instanciem el controlador d'autenticació
+// (Li passem la connexió $pdo que ve de db.php)
 $authController = new AuthController($pdo);
 
+// 4. Obtenim la ruta de la URL (o 'home' per defecte)
 $route = $_GET['route'] ?? 'home';
+
+// 5. Mirem quin mètode s'està fent servir (GET o POST)
 $method = $_SERVER['REQUEST_METHOD'];
 
+// 6. EL ROUTER PRINCIPAL (Switch)
 switch ($route) {
+    
+    // --- PÀGINA D'INICI ---
     case 'home':
-        echo "¡Bienvenido a Isla Transfers!";
+        // Si l'usuari ja està loguejat, el redirigim al seu panell
+        if (isset($_SESSION['user_role'])) {
+            if ($_SESSION['user_role'] === 'admin') {
+                header('Location: /admin/dashboard');
+            } else {
+                header('Location: /particular/dashboard');
+            }
+            exit;
+        }
+        // Si no, el portem al login
+        header('Location: /login');
         break;
 
-    // --- Rutas de Autenticación ---
+    // --- AUTENTICACIÓ (Login, Register, Logout) ---
     case 'login':
         if ($method === 'GET') {
             $authController->showLoginForm();
@@ -34,25 +55,33 @@ switch ($route) {
         $authController->logout();
         break;
 
-    // --- Rutas de Administración (Protegidas) ---
+    // --- PANELL ADMINISTRADOR ---
     case 'admin/dashboard':
-        
-        // Comprobación de Login (temporal, sin rol)
-        if (!isset($_SESSION['user_id'])) {
-            $_SESSION['error_message'] = "Debes iniciar sesión para acceder.";
-            header('Location: /login');
+        // Seguretat: Si no és admin, fora!
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+            $_SESSION['error_message'] = "Accés denegat: No ets administrador.";
+            header('Location: /login'); 
             exit;
         }
-        
-        // Canviem el nom per 'nombre' (de la BBDD)
-        echo "Bienvenido al Panel de Administración, " . htmlspecialchars($_SESSION['user_name']);
-        echo '<br><a href="/logout">Cerrar sesión</a>';
+        // Carreguem la vista del menú blau
+        require_once 'views/admin/dashboard.php';
         break;
 
+    // --- PANELL PARTICULAR ---
+    case 'particular/dashboard':
+        // Seguretat: Si no està loguejat, fora!
+        if (!isset($_SESSION['user_role'])) {
+            header('Location: /login'); 
+            exit;
+        }
+        // Carreguem la vista del menú verd
+        require_once 'views/particular/dashboard.php';
+        break;
+
+    // --- ERROR 404 ---
     default:
         http_response_code(404);
-        echo "Error 404: Página no encontrada";
-        // require_once 'views/404.php'; 
+        echo "<h1>Error 404</h1><p>Pàgina no trobada.</p>";
         break;
 }
 ?>

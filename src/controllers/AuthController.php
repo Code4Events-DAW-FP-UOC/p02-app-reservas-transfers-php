@@ -69,19 +69,24 @@ class AuthController
         $user = $this->userModel->login($email, $password);
 
         if ($user) {
-            // LOGIN CORRECTO!
-            // Corregido: Usar 'id_viajero' y 'nombre'
+            // LOGIN CORRECTE
             $_SESSION['user_id'] = $user['id_viajero']; 
             $_SESSION['user_name'] = $user['nombre'];
             
-            // NO guardamos 'user_role' porque no existe
+            // Definim manualment quin email és l'administrador.
+            $adminEmail = 'admin@isla.com'; 
 
-            // Como no sabemos el rol, enviamos a todos a 'home' de momento.
-            header('Location: /');
+            if ($user['email'] === $adminEmail) {
+                $_SESSION['user_role'] = 'admin';
+                header('Location: /admin/dashboard'); // Redirigim al menú BLAU
+            } else {
+                $_SESSION['user_role'] = 'particular';
+                header('Location: /particular/dashboard'); // Redirigim al menú VERD
+            }
             exit;
             
         } else {
-            // LOGIN INCORRECTO
+            // ... (codi d'error igual que abans) ...
             $_SESSION['error_message'] = "Email o contraseña incorrectos.";
             header('Location: /login'); 
             exit;
