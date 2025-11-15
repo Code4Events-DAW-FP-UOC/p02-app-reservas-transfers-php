@@ -10,7 +10,7 @@ class Router {
             '/register' => ['AuthenticationController', 'register'],
             '/register/process' => ['AuthenticationController', 'registerProcess'],
             '/logout' => ['AuthenticationController', 'logout'],
-            '/particularpanel' => ['ParticularController', 'panel'],
+            '/userpanel' => ['ParticularController', 'panel'],
             '/corporatepanel' => ['CorporateController', 'panel'],
             '/adminpanel' => ['AdminController', 'panel'],
         ];

@@ -93,7 +93,7 @@ class AuthenticationController extends Controller {
     // Logout
     public function logout() {
         session_destroy();
-        header('Location: login.php');
+        header('Location: /');
         exit;
     }
 }

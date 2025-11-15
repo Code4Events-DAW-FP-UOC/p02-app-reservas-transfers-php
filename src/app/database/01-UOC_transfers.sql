@@ -7,6 +7,8 @@
 -- Versión del servidor: 10.5.8-MariaDB-1:10.5.8+maria~buster
 -- Versión de PHP: 8.2.14
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+
+-- Base de datos: `isla_transfers`
 START TRANSACTION;
 SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -14,8 +16,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 --
--- Base de datos: `UOC_transfers`
---
+
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `tranfer_hotel`
