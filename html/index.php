@@ -4,6 +4,7 @@ spl_autoload_register(function ($class) {
         __DIR__ . '/../core/' . $class . '.php',
         __DIR__ . '/../app/controllers/' . $class . '.php',
         __DIR__ . '/../app/models/' . $class . '.php',
+        __DIR__ . '/../app/helpers/' . $class . '.php',
     ];
 
     foreach ($paths as $path) {

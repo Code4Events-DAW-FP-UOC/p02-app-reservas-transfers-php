@@ -28,7 +28,7 @@
         <h1 class="mb-4">Bienvenido/a a Isla Transfers</h1>
         <p class="lead mb-4">Tu servicio de traslados de confianza a la isla.<br>
             Reserva fácilmente tu trayecto del aeropuerto al hotel y viceversa.</p>
-        <a href="/auth/login" class="btn btn-primary btn-lg">Haz tu reserva ahora</a>
+        <a href="/user/nuevaReserva" class="btn btn-primary btn-lg">Haz tu reserva ahora</a>
     </div>
 </div>
 

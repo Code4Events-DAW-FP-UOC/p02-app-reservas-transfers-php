@@ -10,7 +10,7 @@
         <?php if (!empty($success)): ?>
             <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
         <?php endif; ?>
-        <form method="post" action="/user/edit">
+        <form method="post" action="/user/editarPerfil">
             <div class="row mb-3">
                 <div class="col-md-4 mb-2 mb-md-0">
                     <label for="nombre" class="form-label">Nombre<span class="text-danger">*</span></label>
@@ -45,28 +45,10 @@
                     <input type="text" class="form-control" name="pais" id="pais" value="<?= htmlspecialchars($usuario['pais']) ?>">
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-md-6 mb-2 mb-md-0">
-                    <label for="password" class="form-label">
-                        Nueva contraseña
-                    </label>
-                    <input type="password" class="form-control" name="password" id="password" autocomplete="new-password">
-                </div>
-                <div class="col-md-6">
-                    <label for="confirm_password" class="form-label">
-                        Repite la nueva contraseña
-                    </label>
-                    <input type="password" class="form-control" name="confirm_password" id="confirm_password" autocomplete="new-password">
-                </div>
-                <div class="col-12">
-                    <small class="form-text text-muted">
-                        Solo rellena estos campos si deseas cambiar la contraseña.
-                    </small>
-                </div>
-            </div>
             <button type="submit" class="btn btn-primary w-100">Guardar cambios</button>
         </form>
     </div>
+
 </div>
 
 <?php require __DIR__ . '/../components/footer.php'; ?>

@@ -3,12 +3,12 @@
 
 <div class="container mt-4">
     <div class="btn-group mb-3">
-        <a href="/userAdmin/calendario" class="btn btn-outline-primary active">Mes</a>
+        <a href="/userAdmin/calendario" class="btn btn-outline-primary">Mes</a>
         <a href="/userAdmin/calendarioSemana" class="btn btn-outline-primary">Semana</a>
-        <a href="/userAdmin/calendarioDia" class="btn btn-outline-primary">Día</a>
+        <a href="/userAdmin/calendarioDia" class="btn btn-outline-primary active">Día</a>
     </div>
 
-    <h2 class="mb-4">Calendario de reservas - Vista mensual</h2>
+    <h2 class="mb-4">Calendario de reservas - Vista diaria</h2>
     <table class="table table-bordered table-hover">
         <thead class="table-light">
             <tr>
@@ -37,7 +37,7 @@
             <?php endforeach; ?>
             <?php if (empty($reservas)): ?>
                 <tr>
-                    <td colspan="7" class="text-center">No hay reservas para este mes.</td>
+                    <td colspan="7" class="text-center">No hay reservas para este día.</td>
                 </tr>
             <?php endif; ?>
         </tbody>

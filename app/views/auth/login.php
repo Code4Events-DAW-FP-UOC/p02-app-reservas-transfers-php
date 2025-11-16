@@ -9,8 +9,8 @@
         <?php endif; ?>
         <form method="post" action="/auth/login">
             <div class="mb-3">
-                <label for="email" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Tu email" required>
+                <label for="identificador" class="form-label">Correo electrónico o usuario</label>
+                <input type="text" class="form-control" id="identificador" name="identificador" placeholder="Tu email o número de usuario" required autofocus>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>

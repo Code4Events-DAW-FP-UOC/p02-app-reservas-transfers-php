@@ -27,12 +27,14 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `tranfer_hotel`
 --
 
-CREATE TABLE `tranfer_hotel` (
+CREATE TABLE `transfer_hoteles` (
   `id_hotel` int(11) NOT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
   `id_zona` int(11) DEFAULT NULL,
-  `Comision` int(11) DEFAULT NULL,
-  `usuario` int(11) DEFAULT NULL,
-  `password` varchar(100) NOT NULL
+  `comision` int(11) DEFAULT NULL,
+  `usuario` varchar(100) NOT NULL UNIQUE,
+  `email` varchar(100) NOT NULL UNIQUE,
+  `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -45,7 +47,7 @@ CREATE TABLE `transfer_precios` (
   `id_precios` int(11) NOT NULL,
   `id_vehiculo` int(11) NOT NULL,
   `id_hotel` int(11) NOT NULL,
-  `Precio` int(11) NOT NULL
+  `precio` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -59,16 +61,16 @@ CREATE TABLE `transfer_reservas` (
   `localizador` varchar(100) NOT NULL,
   `id_hotel` int(11) DEFAULT NULL COMMENT 'Es el hotel que realiza la reserva',
   `id_tipo_reserva` int(11) NOT NULL,
-  `email_cliente` int(11) NOT NULL,
+  `id_viajero` int(11) NOT NULL,
   `fecha_reserva` datetime NOT NULL,
   `fecha_modificacion` datetime NOT NULL,
   `id_destino` int(11) NOT NULL,
-  `fecha_entrada` date NOT NULL,
-  `hora_entrada` time NOT NULL,
+  `fecha_entrada` date NULL,
+  `hora_entrada` time NULL,
   `numero_vuelo_entrada` varchar(50) NOT NULL,
-  `origen_vuelo_entrada` varchar(50) NOT NULL,
-  `hora_vuelo_salida` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `fecha_vuelo_salida` date NOT NULL,
+  `origen_vuelo_entrada` varchar(50) NULL,
+  `hora_vuelo_salida` time NULL,
+  `fecha_vuelo_salida` date NULL,
   `num_viajeros` int(11) NOT NULL,
   `id_vehiculo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -76,25 +78,25 @@ CREATE TABLE `transfer_reservas` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `transfer_tipo_reserva`
+-- Estructura de tabla para la tabla `transfer_tipo_reservas`
 --
 
-CREATE TABLE `transfer_tipo_reserva` (
+CREATE TABLE `transfer_tipo_reservas` (
   `id_tipo_reserva` int(11) NOT NULL,
-  `Descripción` int(11) NOT NULL
+  `descripcion` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `transfer_vehiculo`
+-- Estructura de tabla para la tabla `transfer_vehiculos`
 --
 
-CREATE TABLE `transfer_vehiculo` (
+CREATE TABLE `transfer_vehiculos` (
   `id_vehiculo` int(11) NOT NULL,
-  `Descripción` varchar(100) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
   `email_conductor` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL
+  `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -112,19 +114,20 @@ CREATE TABLE `transfer_viajeros` (
   `codigoPostal` varchar(100) NOT NULL,
   `ciudad` varchar(100) NOT NULL,
   `pais` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL
+  `email` varchar(100) NOT NULL UNIQUE,
+  `password` varchar(255) NOT NULL,
+  `rol` varchar(100) DEFAULT 'particular'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `transfer_zona`
+-- Estructura de tabla para la tabla `transfer_zonas`
 --
 
-CREATE TABLE `transfer_zona` (
+CREATE TABLE `transfer_zonas` (
   `id_zona` int(11) NOT NULL,
-  `descripcion` int(11) NOT NULL
+  `descripcion` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -132,9 +135,9 @@ CREATE TABLE `transfer_zona` (
 --
 
 --
--- Indices de la tabla `tranfer_hotel`
+-- Indices de la tabla `transer_hotel`
 --
-ALTER TABLE `tranfer_hotel`
+ALTER TABLE `transfer_hoteles`
   ADD PRIMARY KEY (`id_hotel`),
   ADD KEY `FK_HOTEL_ZONA` (`id_zona`);
 
@@ -156,15 +159,15 @@ ALTER TABLE `transfer_reservas`
   ADD KEY `FK_RESERVAS_VEHICULO` (`id_vehiculo`);
 
 --
--- Indices de la tabla `transfer_tipo_reserva`
+-- Indices de la tabla `transfer_tipo_reservas`
 --
-ALTER TABLE `transfer_tipo_reserva`
+ALTER TABLE `transfer_tipo_reservas`
   ADD PRIMARY KEY (`id_tipo_reserva`);
 
 --
--- Indices de la tabla `transfer_vehiculo`
+-- Indices de la tabla `transfer_vehiculos`
 --
-ALTER TABLE `transfer_vehiculo`
+ALTER TABLE `transfer_vehiculos`
   ADD PRIMARY KEY (`id_vehiculo`);
 
 --
@@ -174,9 +177,9 @@ ALTER TABLE `transfer_viajeros`
   ADD PRIMARY KEY (`id_viajero`);
 
 --
--- Indices de la tabla `transfer_zona`
+-- Indices de la tabla `transfer_zonas`
 --
-ALTER TABLE `transfer_zona`
+ALTER TABLE `transfer_zonas`
   ADD PRIMARY KEY (`id_zona`);
 
 --
@@ -184,9 +187,9 @@ ALTER TABLE `transfer_zona`
 --
 
 --
--- AUTO_INCREMENT de la tabla `tranfer_hotel`
+-- AUTO_INCREMENT de la tabla `transfer_hoteles`
 --
-ALTER TABLE `tranfer_hotel`
+ALTER TABLE `transfer_hoteles`
   MODIFY `id_hotel` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -196,15 +199,15 @@ ALTER TABLE `transfer_reservas`
   MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `transfer_tipo_reserva`
+-- AUTO_INCREMENT de la tabla `transfer_tipo_reservas`
 --
-ALTER TABLE `transfer_tipo_reserva`
+ALTER TABLE `transfer_tipo_reservas`
   MODIFY `id_tipo_reserva` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `transfer_vehiculo`
+-- AUTO_INCREMENT de la tabla `transfer_vehiculos`
 --
-ALTER TABLE `transfer_vehiculo`
+ALTER TABLE `transfer_vehiculos`
   MODIFY `id_vehiculo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -213,15 +216,10 @@ ALTER TABLE `transfer_vehiculo`
 ALTER TABLE `transfer_viajeros`
   MODIFY `id_viajero` int(11) NOT NULL AUTO_INCREMENT;
 
--- 
--- ROL de la tabla `transfer_viajeros`
 --
-ALTER TABLE `transfer_viajeros` ADD `rol` VARCHAR(20) NOT NULL DEFAULT `particular`; 
-
+-- AUTO_INCREMENT de la tabla `transfer_zonas`
 --
--- AUTO_INCREMENT de la tabla `transfer_zona`
---
-ALTER TABLE `transfer_zona`
+ALTER TABLE `transfer_zonas`
   MODIFY `id_zona` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -229,26 +227,27 @@ ALTER TABLE `transfer_zona`
 --
 
 --
--- Filtros para la tabla `tranfer_hotel`
+-- Filtros para la tabla `transfer_hoteles`
 --
-ALTER TABLE `tranfer_hotel`
-  ADD CONSTRAINT `FK_HOTEL_ZONA` FOREIGN KEY (`id_zona`) REFERENCES `transfer_zona` (`id_zona`);
+ALTER TABLE `transfer_hoteles`
+  ADD CONSTRAINT `FK_HOTEL_ZONA` FOREIGN KEY (`id_zona`) REFERENCES `transfer_zonas` (`id_zona`);
 
 --
 -- Filtros para la tabla `transfer_precios`
 --
 ALTER TABLE `transfer_precios`
-  ADD CONSTRAINT `FK_PRECIOS_HOTEL` FOREIGN KEY (`id_hotel`) REFERENCES `tranfer_hotel` (`id_hotel`),
-  ADD CONSTRAINT `FK_PRECIOS_VEHICULO` FOREIGN KEY (`id_vehiculo`) REFERENCES `transfer_vehiculo` (`id_vehiculo`);
+  ADD CONSTRAINT `FK_PRECIOS_HOTEL` FOREIGN KEY (`id_hotel`) REFERENCES `transfer_hoteles` (`id_hotel`),
+  ADD CONSTRAINT `FK_PRECIOS_VEHICULO` FOREIGN KEY (`id_vehiculo`) REFERENCES `transfer_vehiculos` (`id_vehiculo`);
 
 --
 -- Filtros para la tabla `transfer_reservas`
 --
 ALTER TABLE `transfer_reservas`
-  ADD CONSTRAINT `FK_RESERVAS_DESTINO` FOREIGN KEY (`id_destino`) REFERENCES `tranfer_hotel` (`id_hotel`),
-  ADD CONSTRAINT `FK_RESERVAS_HOTEL` FOREIGN KEY (`id_hotel`) REFERENCES `tranfer_hotel` (`id_hotel`),
-  ADD CONSTRAINT `FK_RESERVAS_TIPO` FOREIGN KEY (`id_tipo_reserva`) REFERENCES `transfer_tipo_reserva` (`id_tipo_reserva`),
-  ADD CONSTRAINT `FK_RESERVAS_VEHICULO` FOREIGN KEY (`id_vehiculo`) REFERENCES `transfer_vehiculo` (`id_vehiculo`);
+  ADD CONSTRAINT `FK_RESERVAS_DESTINO` FOREIGN KEY (`id_destino`) REFERENCES `transfer_hoteles` (`id_hotel`),
+  ADD CONSTRAINT `FK_RESERVAS_HOTEL` FOREIGN KEY (`id_hotel`) REFERENCES `transfer_hoteles` (`id_hotel`),
+  ADD CONSTRAINT `FK_RESERVAS_TIPO` FOREIGN KEY (`id_tipo_reserva`) REFERENCES `transfer_tipo_reservas` (`id_tipo_reserva`),
+  ADD CONSTRAINT `FK_RESERVAS_VEHICULO` FOREIGN KEY (`id_vehiculo`) REFERENCES `transfer_vehiculos` (`id_vehiculo`),
+  ADD CONSTRAINT `FK_RESERVAS_VIAJERO` FOREIGN KEY (`id_viajero`) REFERENCES `transfer_viajeros` (`id_viajero`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

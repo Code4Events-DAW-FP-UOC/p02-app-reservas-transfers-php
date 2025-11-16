@@ -23,9 +23,15 @@ if (session_status() === PHP_SESSION_NONE) {
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li>
-                            <a class="dropdown-item" href="/user/edit">Editar perfil</a>
+                            <?php if ($_SESSION['user_rol'] === 'corporativo'): ?>
+                                <a class="dropdown-item" href="/userCorporativo/editarPerfil">Editar perfil</a>
+                            <?php else: ?>
+                                <a class="dropdown-item" href="/user/editarPerfil">Editar perfil</a>
+                            <?php endif; ?>
                         </li>
-                        <li><a class="dropdown-item" href="/user/misreservas">Ver mis reservas</a></li>
+                        <li><a class="dropdown-item" href="/user/cambiarPassword">Cambiar contraseña</a></li>
+                        <li><a class="dropdown-item" href="/user/nuevaReserva">Nueva reserva</a></li>
+                        <li><a class="dropdown-item" href="/user/misReservas">Mis reservas</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
