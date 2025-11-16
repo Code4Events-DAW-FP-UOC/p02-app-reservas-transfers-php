@@ -35,16 +35,16 @@ INSERT INTO `transfer_zona` (`id_zona`, `descripcion`) VALUES
 
 -- Insertar Vehículos
 INSERT INTO `transfer_vehiculo` (`id_vehiculo`, `Descripción`, `email_conductor`, `password`) VALUES
-(1, 'Standard Sedan (4 pax)', 'conductor.sedan@transfer.com', @hashed_pass),
-(2, 'Minivan (8 pax)', 'conductor.minivan@transfer.com', @hashed_pass),
-(3, 'Autobús (30 pax)', 'conductor.bus@transfer.com', @hashed_pass);
+(1, 'Standard Sedan', 'conductor.sedan@transfer.com', @hashed_pass),
+(2, 'Minivan', 'conductor.minivan@transfer.com', @hashed_pass),
+(3, 'Autobús', 'conductor.bus@transfer.com', @hashed_pass);
 
 -- Insertar Tipos de Reserva
 -- NOTA: Tu schema define 'Descripción' como INT(11), así que insertamos números.
 INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `Descripción`) VALUES
-(1, 1), -- 1 = Solo Entrada (Aeropuerto -> Hotel)
-(2, 2), -- 2 = Solo Salida (Hotel -> Aeropuerto)
-(3, 3); -- 3 = Entrada y Salida
+(1, 'Ida'), -- 1 = Solo Entrada (Aeropuerto -> Hotel)
+(2, 'Vuelta'), -- 2 = Solo Salida (Hotel -> Aeropuerto)
+(3, 'Ida y vuelta'); -- 3 = Entrada y Salida
 
 -- Insertar Viajeros (Usuarios)
 -- Aquí cumplimos tu requisito de 3 roles.
@@ -117,6 +117,18 @@ INSERT INTO `transfer_reservas` (
 (
     2, 
     'UOC-DEF456', 
+    4, -- 'id_hotel' (quién reserva) = Hotel UOC Beach
+    2, -- 'id_tipo_reserva' = Entrada y Salida
+    1, -- 'email_cliente' (viajero) = Ana Pérez (ID 2)
+    '2025-02-23 06:13:00', '2025-02-23 06:15:00', 
+    4, -- 'id_destino' (dónde va) = Hotel UOC Beach
+    '2025-12-25', '22:30:00', 'MS2323', 'Barcelona (BCN)', 
+    '2026-01-05 06:00:00', '2026-01-05', 
+    4, 2 -- 4 viajeros, Vehículo 2 (Minivan)
+),
+(
+    3, 
+    'UOC-GHI789', 
     3, -- 'id_hotel' (quién reserva) = Hotel Marítimo Centro
     1, -- 'id_tipo_reserva' = Solo Entrada
     3, -- 'email_cliente' (viajero) = Carlos Sánchez (ID 3)

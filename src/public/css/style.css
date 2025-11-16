@@ -1,0 +1,123 @@
+/* Colores base */
+:root {
+  --color-principal: #00b7c2; /* Botón principal y enlaces */
+  --color-header: #0a2540; /* Título principal */
+  --color-texto: #333; /* Texto general */
+  --color-bg: #fff; /* Fondo */
+  --color-navbar-bg: #0a2540; /* Navbar */
+  --color-footer-bg: var(--color-gris);
+  --color-footer-text: #888;
+  --color-acento: #ff6b6b;
+  --color-enfasis: #ffb81c;
+  --color-neutro: #f6e7d8;
+  --color-gris: #6b7280;
+  --color-fondo: #fff;
+}
+
+body {
+  font-family: "Montserrat", Arial, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--color-principal) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5em;
+  color: var(--color-bg) !important;
+  letter-spacing: 1px;
+}
+
+.navbar-text, .nav-link {
+  color: var(--color-neutro);
+}
+
+/* Botón principal */
+.btn-primary,
+.btn-primary:visited {
+  background-color: var(--color-principal) !important;
+  border-color: var(--color-principal) !important;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: background 0.15s;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #0097a7 !important;
+  border-color: #0097a7 !important;
+}
+
+/* Encabezados */
+h1,
+h2,
+h3 {
+  color: var(--color-header);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+h1 {
+  margin-bottom: 0.7rem;
+}
+
+/* Footer */
+footer.footer {
+  background-color: var(--color-footer-bg);
+  color: var(--color-footer-text);
+  font-size: 0.95rem;
+  border-top: 1px solid #eee;
+  padding: 1.2em 0;
+  margin-top: 4em;
+}
+
+/* Hero sección con carrusel */
+.hero-carousel {
+  position: relative;
+  height: 100vh;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  opacity: 0.8; /* puedes ajustar la opacidad */
+  transition: background-image 0.8s;
+}
+
+.hero-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  /* Centrado por flex */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-content h1,
+.hero-content .lead {
+  color: #fff;
+}
+
+.hero-carousel .carousel-inner,
+.hero-carousel .carousel-item,
+.hero-bg {
+  height: 100vh;
+}

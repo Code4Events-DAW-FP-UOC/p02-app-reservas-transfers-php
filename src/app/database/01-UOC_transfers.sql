@@ -48,7 +48,7 @@ CREATE TABLE `transfer_reservas` (
 `localizador` varchar(100) NOT NULL,
 `id_hotel` int(11) DEFAULT NULL COMMENT 'Es el hotel que realiza la reserva',
 `id_tipo_reserva` int(11) NOT NULL,
-`email_cliente` int(11) NOT NULL,
+`email_cliente` int(11) NOT NULL, -- cambiamos por id
 `fecha_reserva` datetime NOT NULL,
 `fecha_modificacion` datetime NOT NULL,
 `id_destino` int(11) NOT NULL,
@@ -68,7 +68,7 @@ current_timestamp(),
 --
 CREATE TABLE `transfer_tipo_reserva` (
 `id_tipo_reserva` int(11) NOT NULL,
-`Descripción` int(11) NOT NULL
+`Descripción` varchar(100) NOT NULL -- Cambiamos tipo de dato de int(11) a varchar(100)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 --
@@ -95,7 +95,7 @@ CREATE TABLE `transfer_viajeros` (
 `pais` varchar(100) NOT NULL,
 `email` varchar(100) NOT NULL,
 `password` varchar(100) NOT NULL,
-`rol` varchar(100) NOT NULL
+`rol` varchar(100) NOT NULL -- añadimos rol
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 --
@@ -129,7 +129,7 @@ ADD KEY `FK_RESERVAS_DESTINO` (`id_destino`),
 ADD KEY `FK_RESERVAS_HOTEL` (`id_hotel`),
 ADD KEY `FK_RESERVAS_TIPO` (`id_tipo_reserva`),
 ADD KEY `FK_RESERVAS_VEHICULO` (`id_vehiculo`);
---
+-- añadimos id_cliente como FK
 -- Indices de la tabla `transfer_tipo_reserva`
 --
 ALTER TABLE `transfer_tipo_reserva`

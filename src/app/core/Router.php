@@ -13,6 +13,9 @@ class Router {
             '/userpanel' => ['ParticularController', 'panel'],
             '/corporatepanel' => ['CorporateController', 'panel'],
             '/adminpanel' => ['AdminController', 'panel'],
+            '/adminpanel/reservar' => ['AdminController', 'nuevaReserva'],
+            '/adminpanel/eliminar' => ['AdminController', 'eliminarReserva'],
+            '/adminpanel/editar' => ['AdminController', 'editarReserva'],
         ];
     }
 
