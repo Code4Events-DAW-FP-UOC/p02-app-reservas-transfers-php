@@ -69,14 +69,13 @@ class UserAdminController extends Controller
 
         $reservaModel = new Reserva();
         $hotelModel = new Hotel();
-        $viajeroModel = new User(); // O Viajero
+        $viajeroModel = new User(); // O el modelo de viajeros si lo tienes separado
         $tipoReservaModel = new TipoReserva();
         $vehiculoModel = new Vehiculo();
 
         // Recupera la reserva actual
         $reserva = $reservaModel->getById($id);
         if (!$reserva) {
-            // Si no existe, redirige al listado
             header('Location: /userAdmin/listadoReservas');
             exit;
         }
@@ -85,30 +84,32 @@ class UserAdminController extends Controller
         $success = null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Recoge los datos del formulario
+            // Utilidad para pasar a null si llega vacío
+            function nullSiVacio($valor)
+            {
+                return (isset($valor) && $valor !== '' && strtolower($valor) !== 'null') ? $valor : null;
+            }
             $data = [
-                'id_hotel'              => $_POST['id_hotel'] ?? null,
+                'id_hotel'              => nullSiVacio($_POST['id_hotel'] ?? null),
                 'id_tipo_reserva'       => $_POST['id_tipo_reserva'] ?? null,
                 'id_viajero'            => $_POST['id_viajero'] ?? null,
-                'fecha_reserva'         => $_POST['fecha_reserva'] ?? null,
+                'fecha_reserva'         => $reserva['fecha_reserva'], // No editable
                 'fecha_modificacion'    => date('Y-m-d H:i:s'),
                 'id_destino'            => $_POST['id_destino'] ?? null,
-                'fecha_entrada'         => $_POST['fecha_entrada'] ?? null,
-                'hora_entrada'          => $_POST['hora_entrada'] ?? null,
-                'numero_vuelo_entrada'  => $_POST['numero_vuelo_entrada'] ?? null,
-                'origen_vuelo_entrada'  => $_POST['origen_vuelo_entrada'] ?? null,
-                'hora_vuelo_salida'     => $_POST['hora_vuelo_salida'] ?? null,
-                'fecha_vuelo_salida'    => $_POST['fecha_vuelo_salida'] ?? null,
+                'fecha_entrada'         => nullSiVacio($_POST['fecha_entrada'] ?? null),
+                'hora_entrada'          => nullSiVacio($_POST['hora_entrada'] ?? null),
+                'numero_vuelo_entrada'  => nullSiVacio($_POST['numero_vuelo_entrada'] ?? null),
+                'origen_vuelo_entrada'  => nullSiVacio($_POST['origen_vuelo_entrada'] ?? null),
+                'hora_vuelo_salida'     => nullSiVacio($_POST['hora_vuelo_salida'] ?? null),
+                'fecha_vuelo_salida'    => nullSiVacio($_POST['fecha_vuelo_salida'] ?? null),
                 'num_viajeros'          => $_POST['num_viajeros'] ?? null,
                 'id_vehiculo'           => $_POST['id_vehiculo'] ?? null,
             ];
 
             try {
-                // Validación y actualización
                 $ok = $reservaModel->update($id, $data);
                 if ($ok) {
                     $success = "¡Reserva actualizada correctamente!";
-                    // Refresca los datos (para mostrar en la vista los cambios)
                     $reserva = $reservaModel->getById($id);
                 } else {
                     $error = "No se ha podido actualizar la reserva.";

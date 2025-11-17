@@ -16,9 +16,9 @@
 
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="id_hotel" class="form-label">Hotel</label>
-                    <select name="id_hotel" id="id_hotel" class="form-select" required>
-                        <option value="">Selecciona hotel</option>
+                    <label for="id_hotel" class="form-label">Hotel (si aplica)</label>
+                    <select name="id_hotel" id="id_hotel" class="form-select">
+                        <option value="">Ninguno</option>
                         <?php foreach ($hoteles as $hotel): ?>
                             <option value="<?= $hotel['id_hotel'] ?>" <?= ($reserva['id_hotel'] == $hotel['id_hotel'] ? 'selected' : '') ?>>
                                 <?= htmlspecialchars($hotel['nombre']) ?>
@@ -53,22 +53,22 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="fecha_entrada" class="form-label">Fecha entrada</label>
-                    <input type="date" name="fecha_entrada" id="fecha_entrada" class="form-control" value="<?= htmlspecialchars($reserva['fecha_entrada']) ?>" required>
+                    <input type="date" name="fecha_entrada" id="fecha_entrada" class="form-control" value="<?= htmlspecialchars($reserva['fecha_entrada'] ?? '') ?>">
                 </div>
                 <div class="col-md-6">
                     <label for="hora_entrada" class="form-label">Hora entrada</label>
-                    <input type="time" name="hora_entrada" id="hora_entrada" class="form-control" value="<?= htmlspecialchars($reserva['hora_entrada']) ?>" required>
+                    <input type="time" name="hora_entrada" id="hora_entrada" class="form-control" value="<?= htmlspecialchars($reserva['hora_entrada'] ?? '') ?>">
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="numero_vuelo_entrada" class="form-label">Nº vuelo entrada</label>
-                    <input type="text" name="numero_vuelo_entrada" id="numero_vuelo_entrada" class="form-control" value="<?= htmlspecialchars($reserva['numero_vuelo_entrada']) ?>">
+                    <input type="text" name="numero_vuelo_entrada" id="numero_vuelo_entrada" class="form-control" value="<?= htmlspecialchars($reserva['numero_vuelo_entrada'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
                     <label for="origen_vuelo_entrada" class="form-label">Origen vuelo</label>
-                    <input type="text" name="origen_vuelo_entrada" id="origen_vuelo_entrada" class="form-control" value="<?= htmlspecialchars($reserva['origen_vuelo_entrada']) ?>">
+                    <input type="text" name="origen_vuelo_entrada" id="origen_vuelo_entrada" class="form-control" value="<?= htmlspecialchars($reserva['origen_vuelo_entrada'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
                     <label for="id_destino" class="form-label">Destino</label>
@@ -86,11 +86,11 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="hora_vuelo_salida" class="form-label">Hora salida</label>
-                    <input type="time" name="hora_vuelo_salida" id="hora_vuelo_salida" class="form-control" value="<?= htmlspecialchars($reserva['hora_vuelo_salida']) ?>">
+                    <input type="time" name="hora_vuelo_salida" id="hora_vuelo_salida" class="form-control" value="<?= htmlspecialchars($reserva['hora_vuelo_salida'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
                     <label for="fecha_vuelo_salida" class="form-label">Fecha salida</label>
-                    <input type="date" name="fecha_vuelo_salida" id="fecha_vuelo_salida" class="form-control" value="<?= htmlspecialchars($reserva['fecha_vuelo_salida']) ?>">
+                    <input type="date" name="fecha_vuelo_salida" id="fecha_vuelo_salida" class="form-control" value="<?= htmlspecialchars($reserva['fecha_vuelo_salida'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
                     <label for="num_viajeros" class="form-label">Nº viajeros</label>
@@ -119,4 +119,49 @@
         </form>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tipoReserva = document.getElementById('id_tipo_reserva');
+        const rowFechaEntrada = document.getElementById('fecha_entrada').closest('.col-md-6');
+        const rowHoraEntrada = document.getElementById('hora_entrada').closest('.col-md-6');
+        const rowNumVueloEntrada = document.getElementById('numero_vuelo_entrada').closest('.col-md-4');
+        const rowOrigenEntrada = document.getElementById('origen_vuelo_entrada').closest('.col-md-4');
+        const rowHoraSalida = document.getElementById('hora_vuelo_salida').closest('.col-md-4');
+        const rowFechaSalida = document.getElementById('fecha_vuelo_salida').closest('.col-md-4');
+
+        function actualizarVisibilidadCampos() {
+            // Oculta todo por defecto
+            rowFechaEntrada.style.display = "none";
+            rowHoraEntrada.style.display = "none";
+            rowNumVueloEntrada.style.display = "none";
+            rowOrigenEntrada.style.display = "none";
+            rowHoraSalida.style.display = "none";
+            rowFechaSalida.style.display = "none";
+
+            switch (tipoReserva.value) {
+                case "1": // Aeropuerto -> Hotel
+                    rowFechaEntrada.style.display = "";
+                    rowHoraEntrada.style.display = "";
+                    rowNumVueloEntrada.style.display = "";
+                    rowOrigenEntrada.style.display = "";
+                    break;
+                case "2": // Hotel -> Aeropuerto
+                    rowHoraSalida.style.display = "";
+                    rowFechaSalida.style.display = "";
+                    break;
+                case "3": // Ida y vuelta
+                    rowFechaEntrada.style.display = "";
+                    rowHoraEntrada.style.display = "";
+                    rowNumVueloEntrada.style.display = "";
+                    rowOrigenEntrada.style.display = "";
+                    rowHoraSalida.style.display = "";
+                    rowFechaSalida.style.display = "";
+                    break;
+            }
+        }
+
+        tipoReserva.addEventListener('change', actualizarVisibilidadCampos);
+        actualizarVisibilidadCampos(); // Llama al cargar para el valor inicial
+    });
+</script>
 <?php require __DIR__ . '/../components/footer.php'; ?>
