@@ -144,7 +144,19 @@ class AdminController
             die("Error SQL: " . $e->getMessage());
         }
     }
+    public function listReservas()
+    {
+        $this->checkAdmin();
 
+        // 1. Instanciem el model
+        $reservaModel = new Reserva($this->pdo);
+        
+        // 2. Obtenim totes les dades
+        $reservas = $reservaModel->getAll();
+
+        // 3. Carreguem la vista (que crearem ara)
+        require_once __DIR__ . '/../views/admin/reservas_list.php';
+    }
     private function checkAdmin() {
         if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
             header('Location: /login');

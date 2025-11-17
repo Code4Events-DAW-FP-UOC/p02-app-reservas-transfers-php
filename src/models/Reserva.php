@@ -87,5 +87,53 @@ class Reserva
         return false; 
     }
     }
-}
+    public function getAll()
+    {
+        try {
+            // Fem JOINs per no veure només IDs (1, 2...), sinó noms (Hotel X, Taxi Y...)
+            // Usem 'LEFT JOIN' per si algun hotel/vehicle s'ha esborrat, que no peti la llista.
+            $sql = "SELECT r.*, 
+                           h.usuario as nombre_hotel, 
+                           v.Descripción as nombre_vehiculo,
+                           u.email as email_cliente_real,
+                           u.nombre as nombre_cliente,
+                           u.apellido1 as apellido_cliente
+                    FROM transfer_reservas r
+                    LEFT JOIN tranfer_hotel h ON r.id_destino = h.id_hotel
+                    LEFT JOIN transfer_vehiculo v ON r.id_vehiculo = v.id_vehiculo
+                    LEFT JOIN transfer_viajeros u ON r.email_cliente = u.id_viajero
+                    ORDER BY r.fecha_reserva DESC"; // Les més noves primer
+
+            $stmt = $this->pdo->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            error_log("Error getAll: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    // funcio x obtenir reserves d'un usuari (per al panel client!)
+    public function getByUserId($userId)
+    {
+        try {
+            $sql = "SELECT r.*, 
+                           h.usuario as nombre_hotel, 
+                           v.Descripción as nombre_vehiculo
+                    FROM transfer_reservas r
+                    LEFT JOIN tranfer_hotel h ON r.id_destino = h.id_hotel
+                    LEFT JOIN transfer_vehiculo v ON r.id_vehiculo = v.id_vehiculo
+                    WHERE r.email_cliente = :uid  -- Filtrem per ID d'usuari
+                    ORDER BY r.fecha_reserva DESC";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':uid' => $userId]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            error_log("Error getByUserId: " . $e->getMessage());
+            return [];
+        }
+    }
+} 
 ?>

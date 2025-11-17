@@ -6,11 +6,13 @@ session_start();
 require_once 'config/db.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/AdminController.php';
+require_once 'controllers/ReservaController.php';
 
 // 3. Instanciem el controlador d'autenticació
 // (Li passem la connexió $pdo que ve de db.php)
 $authController = new AuthController($pdo);
 $adminController = new AdminController($pdo);
+$reservaController = new ReservaController($pdo);
 
 // 4. Obtenim la ruta de la URL (o 'home' per defecte)
 $route = $_GET['route'] ?? 'home';
@@ -93,6 +95,22 @@ switch ($route) {
     // RUTA PER VEURE DETALLS (CONFIRMACIÓ)
     case 'admin/reserva/detalles':
         $adminController->showReservaDetails();
+        break;
+    //RUTA LLISTAT DE RESERVES
+    case 'admin/reservas':
+        $adminController->listReservas();
+        break;
+    // --- RUTES CLIENT PARTICULAR ---
+    case 'reservar':
+        $reservaController->showForm();
+        break;
+
+    case 'reservar/create':
+        if ($method === 'POST') $reservaController->create();
+        break;
+
+    case 'mis-reservas':
+        $reservaController->listMyReservations();
         break;
     // --- ERROR 404 ---
     default:
