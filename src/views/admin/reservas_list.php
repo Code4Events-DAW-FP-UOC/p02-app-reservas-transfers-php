@@ -104,8 +104,7 @@
                             <td class="actions">
                                 <a href="/admin/reserva/detalles?loc=<?php echo $r['localizador']; ?>" title="Ver Detalle">👁️</a>
                                 
-                                <a href="#" title="Editar" onclick="alert('Funcionalidad pendiente de implementar')">✏️</a>
-                                
+                                <a href="/admin/reserva/editar?id=<?php echo $r['id_reserva']; ?>" title="Editar">✏️</a>                                
                                 <a href="/admin/reserva/delete?id=<?php echo $r['id_reserva']; ?>" 
                                    title="Eliminar" 
                                    style="color:red;"

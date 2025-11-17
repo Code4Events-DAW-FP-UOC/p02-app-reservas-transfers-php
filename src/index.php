@@ -121,10 +121,19 @@ switch ($route) {
     case 'mis-reservas':
         $reservaController->listMyReservations();
         break;
-        
+
     // RUTA PER ESBORRAR
     case 'admin/reserva/delete':
         $adminController->deleteReserva();
+        break;
+    // RUTA EDITAR (VISTA)
+    case 'admin/reserva/editar':
+        $adminController->editReserva();
+        break;
+
+    // RUTA EDITAR (POST)
+    case 'admin/reserva/update':
+        if ($method === 'POST') $adminController->updateReserva();
         break;
     // --- ERROR 404 ---
     default:

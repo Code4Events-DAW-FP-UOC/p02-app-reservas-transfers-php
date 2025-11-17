@@ -163,13 +163,13 @@ class AdminController
             exit;
         }
     }
-    
+
     // ACCIÓ: ESBORRAR RESERVA
     public function deleteReserva()
     {
         $this->checkAdmin();
 
-        // Agafem l'ID de la URL (?id=XX)
+        // Agafem l'ID de la URL
         $id = $_GET['id'] ?? null;
 
         if ($id) {
@@ -184,6 +184,76 @@ class AdminController
         // Tornem a la llista
         header('Location: /admin/reservas');
         exit;
+    }
+    // MOSTRAR FORMULARI D'EDICIÓ
+    public function editReserva()
+    {
+        $this->checkAdmin();
+        $id = $_GET['id'] ?? null;
+
+        if (!$id) { header('Location: /admin/reservas'); exit; }
+
+        $reservaModel = new Reserva($this->pdo);
+        $reserva = $reservaModel->findById($id); // Dades actuals
+
+        if (!$reserva) { echo "Reserva no trobada"; return; }
+
+        // Carreguem també els desplegables (igual que a 'new')
+        $stmt = $this->pdo->query("SELECT * FROM tranfer_hotel ORDER BY usuario");
+        $hoteles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt = $this->pdo->query("SELECT * FROM transfer_vehiculo");
+        $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        require_once __DIR__ . '/../views/admin/reserva_editar.php';
+    }
+    //actualitza reserva
+    public function updateReserva()
+    {
+        $this->checkAdmin();
+        $id = $_POST['id_reserva'];
+
+        // Preparem dades (Codi reciclat del 'create', mateixa lògica de dates/hores)
+        $tipo = $_POST['id_tipo_reserva']; 
+        $fechaRaw = $_POST['fecha_vuelo'];
+        
+        if ($tipo == '1') { $horaRaw = $_POST['hora_vuelo']; } 
+        else { $horaRaw = $_POST['hora_recogida']; }
+
+        if (strlen($horaRaw) == 5) $horaRaw .= ":00";
+        $datetimeCompleto = $fechaRaw . ' ' . $horaRaw;
+
+        $datosReserva = [
+            'id_tipo_reserva' => $tipo,
+            'id_destino' => $_POST['id_hotel'],
+            'id_vehiculo' => $_POST['id_vehiculo'],
+            'num_viajeros' => $_POST['num_viajeros'],
+            'numero_vuelo_entrada' => $_POST['numero_vuelo'],
+            // Omplim tot per evitar nulls
+            'fecha_entrada' => $fechaRaw,
+            'hora_entrada' => $datetimeCompleto,
+            'origen_vuelo_entrada' => $_POST['origen_vuelo'] ?? '-',
+            'fecha_vuelo_salida' => $fechaRaw,
+            'hora_vuelo_salida' => $datetimeCompleto,
+        ];
+
+        // Casos específics
+        if ($tipo == '1') {
+            $datosReserva['origen_vuelo_entrada'] = $_POST['origen_vuelo'];
+        } 
+
+        $reservaModel = new Reserva($this->pdo);
+        $success = $reservaModel->update($id, $datosReserva);
+
+        if ($success) {
+            $_SESSION['success_message'] = "Reserva actualitzada correctament.";
+            header('Location: /admin/reservas'); // Tornem a la llista
+            exit;
+        } else {
+            $_SESSION['error_message'] = "Error en actualitzar.";
+            header('Location: /admin/reserva/editar?id=' . $id);
+            exit;
+        }
     }
 }
 ?>

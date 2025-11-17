@@ -145,5 +145,60 @@ class Reserva
             return false;
         }
     }
+    // busquem una reserva per ID (per poder editar-la)
+    public function findById($id)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM transfer_reservas WHERE id_reserva = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    //  Actualitzar una reserva existent
+    public function update($id, $data)
+    {
+        // No actualitzem el localitzador, ni la data de creació, ni l'email del client
+        // Només les dades del viatge.
+        $sql = "UPDATE transfer_reservas SET 
+                    id_tipo_reserva = :id_tipo_reserva,
+                    fecha_modificacion = :fecha_modificacion,
+                    id_destino = :id_destino,
+                    fecha_entrada = :fecha_entrada,
+                    hora_entrada = :hora_entrada,
+                    numero_vuelo_entrada = :numero_vuelo_entrada,
+                    origen_vuelo_entrada = :origen_vuelo_entrada,
+                    fecha_vuelo_salida = :fecha_vuelo_salida,
+                    hora_vuelo_salida = :hora_vuelo_salida,
+                    num_viajeros = :num_viajeros,
+                    id_vehiculo = :id_vehiculo
+                WHERE id_reserva = :id_reserva";
+
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $data['id_reserva'] = $id;
+            $data['fecha_modificacion'] = date('Y-m-d H:i:s'); // Actualitzem la data de modificació
+
+            // Executem (només passem les dades que hem posat a la SQL)
+            $stmt->execute([
+                ':id_reserva' => $id,
+                ':fecha_modificacion' => $data['fecha_modificacion'],
+                ':id_tipo_reserva' => $data['id_tipo_reserva'],
+                ':id_destino' => $data['id_destino'],
+                ':fecha_entrada' => $data['fecha_entrada'],
+                ':hora_entrada' => $data['hora_entrada'],
+                ':numero_vuelo_entrada' => $data['numero_vuelo_entrada'],
+                ':origen_vuelo_entrada' => $data['origen_vuelo_entrada'],
+                ':fecha_vuelo_salida' => $data['fecha_vuelo_salida'],
+                ':hora_vuelo_salida' => $data['hora_vuelo_salida'],
+                ':num_viajeros' => $data['num_viajeros'],
+                ':id_vehiculo' => $data['id_vehiculo']
+            ]);
+
+            return true;
+
+        } catch (PDOException $e) {
+            error_log("Error update reserva: " . $e->getMessage());
+            return false;
+        }
+    }
 } 
 ?>
