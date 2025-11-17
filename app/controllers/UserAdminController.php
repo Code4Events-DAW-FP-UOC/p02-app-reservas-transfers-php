@@ -284,20 +284,19 @@ class UserAdminController extends Controller
         ]);
     }
 
-
     /**
-     * Vista mensual de reservas
+     * Vista mensual del calendario
      */
     public function calendario()
     {
         $this->requireAdmin();
 
-        // Por defecto, mostramos el mes actual
         $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
         $month = isset($_GET['month']) ? intval($_GET['month']) : date('m');
 
         $fechaInicio = date('Y-m-01', strtotime("$year-$month-01"));
         $fechaFin = date('Y-m-t', strtotime($fechaInicio));
+
         $reservaModel = $this->model('Reserva');
         $reservas = $reservaModel->getReservasByRangoFechas($fechaInicio, $fechaFin);
 
@@ -309,16 +308,15 @@ class UserAdminController extends Controller
     }
 
     /**
-     * Vista semanal de reservas
+     * Vista semanal del calendario
      */
     public function calendarioSemana()
     {
         $this->requireAdmin();
 
-        // Semana actual (lunes a domingo)
         $date = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');
         $timestamp = strtotime($date);
-        $diaSemana = date('N', $timestamp); // 1 (lunes) - 7 (domingo)
+        $diaSemana = date('N', $timestamp); // 1=Lunes, 7=Domingo
         $fechaInicio = date('Y-m-d', strtotime("-" . ($diaSemana - 1) . " days", $timestamp));
         $fechaFin = date('Y-m-d', strtotime("+" . (7 - $diaSemana) . " days", $timestamp));
 
@@ -333,7 +331,7 @@ class UserAdminController extends Controller
     }
 
     /**
-     * Vista diaria de reservas
+     * Vista diaria del calendario
      */
     public function calendarioDia()
     {
@@ -349,6 +347,70 @@ class UserAdminController extends Controller
             'fecha' => $fecha
         ]);
     }
+    // /**
+    //  * Vista mensual de reservas
+    //  */
+    // public function calendario()
+    // {
+    //     $this->requireAdmin();
+
+    //     // Por defecto, mostramos el mes actual
+    //     $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
+    //     $month = isset($_GET['month']) ? intval($_GET['month']) : date('m');
+
+    //     $fechaInicio = date('Y-m-01', strtotime("$year-$month-01"));
+    //     $fechaFin = date('Y-m-t', strtotime($fechaInicio));
+    //     $reservaModel = $this->model('Reserva');
+    //     $reservas = $reservaModel->getReservasByRangoFechas($fechaInicio, $fechaFin);
+
+    //     $this->view('userAdmin/calendario', [
+    //         'reservas' => $reservas,
+    //         'year' => $year,
+    //         'month' => $month
+    //     ]);
+    // }
+
+    // /**
+    //  * Vista semanal de reservas
+    //  */
+    // public function calendarioSemana()
+    // {
+    //     $this->requireAdmin();
+
+    //     // Semana actual (lunes a domingo)
+    //     $date = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');
+    //     $timestamp = strtotime($date);
+    //     $diaSemana = date('N', $timestamp); // 1 (lunes) - 7 (domingo)
+    //     $fechaInicio = date('Y-m-d', strtotime("-" . ($diaSemana - 1) . " days", $timestamp));
+    //     $fechaFin = date('Y-m-d', strtotime("+" . (7 - $diaSemana) . " days", $timestamp));
+
+    //     $reservaModel = $this->model('Reserva');
+    //     $reservas = $reservaModel->getReservasByRangoFechas($fechaInicio, $fechaFin);
+
+    //     $this->view('userAdmin/calendarioSemana', [
+    //         'reservas' => $reservas,
+    //         'fechaInicio' => $fechaInicio,
+    //         'fechaFin' => $fechaFin
+    //     ]);
+    // }
+
+    // /**
+    //  * Vista diaria de reservas
+    //  */
+    // public function calendarioDia()
+    // {
+    //     $this->requireAdmin();
+
+    //     $fecha = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');
+
+    //     $reservaModel = $this->model('Reserva');
+    //     $reservas = $reservaModel->getReservasByRangoFechas($fecha, $fecha);
+
+    //     $this->view('userAdmin/calendarioDia', [
+    //         'reservas' => $reservas,
+    //         'fecha' => $fecha
+    //     ]);
+    // }
 
     /**
      * Detalle de una reserva concreta

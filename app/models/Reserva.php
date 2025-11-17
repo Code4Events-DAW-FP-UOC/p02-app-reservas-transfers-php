@@ -397,17 +397,19 @@ class Reserva extends Model
             t.descripcion AS descripcion_tipo, 
             h.nombre AS nombre_hotel, 
             vh.nombre AS destino_hotel,
-            CONCAT(v.nombre, ' ', v.apellido1) AS nombre_viajero
+            CONCAT(v.nombre, ' ', v.apellido1) AS nombre_viajero,
+            v.email AS email_viajero
         FROM transfer_reservas r
         LEFT JOIN transfer_tipo_reservas t ON r.id_tipo_reserva = t.id_tipo_reserva
         LEFT JOIN transfer_hoteles h ON r.id_hotel = h.id_hotel
         LEFT JOIN transfer_hoteles vh ON r.id_destino = vh.id_hotel
         LEFT JOIN transfer_viajeros v ON r.id_viajero = v.id_viajero
-        WHERE r.fecha_entrada BETWEEN ? AND ?
-        ORDER BY r.fecha_entrada ASC
-    ";
+        WHERE 
+            (r.fecha_entrada BETWEEN ? AND ? OR r.fecha_vuelo_salida BETWEEN ? AND ?)
+        ORDER BY r.fecha_entrada ASC, r.hora_entrada ASC
+        ";
         $stmt = $db->prepare($sql);
-        $stmt->execute([$fechaInicio, $fechaFin]);
+        $stmt->execute([$fechaInicio, $fechaFin, $fechaInicio, $fechaFin]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
