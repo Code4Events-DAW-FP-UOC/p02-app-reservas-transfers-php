@@ -52,20 +52,25 @@ class Reserva extends Model
         (localizador, id_hotel, id_tipo_reserva, id_viajero, fecha_reserva, fecha_modificacion, id_destino, fecha_entrada, hora_entrada, numero_vuelo_entrada, origen_vuelo_entrada, hora_vuelo_salida, fecha_vuelo_salida, num_viajeros, id_vehiculo)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
+        // Auxiliar local para controlar nulos y vacíos
+        $nullSiVacio = function ($valor) {
+            return (isset($valor) && $valor !== '' && strtolower($valor) !== 'null') ? $valor : null;
+        };
+
         return $stmt->execute([
             $localizador,
-            nullSiVacio($reserva['id_hotel'] ?? null),
+            $nullSiVacio($reserva['id_hotel'] ?? null),
             $reserva['id_tipo_reserva'],
             $reserva['id_viajero'],
             $reserva['fecha_reserva'],
             $reserva['fecha_modificacion'] ?? date('Y-m-d H:i:s'),
             $reserva['id_destino'] ?? null,
-            nullSiVacio($reserva['fecha_entrada'] ?? null),
-            nullSiVacio($reserva['hora_entrada'] ?? null),
+            $nullSiVacio($reserva['fecha_entrada'] ?? null),
+            $nullSiVacio($reserva['hora_entrada'] ?? null),
             $reserva['numero_vuelo_entrada'] ?? null,
             $reserva['origen_vuelo_entrada'] ?? null,
-            nullSiVacio($reserva['hora_vuelo_salida'] ?? null),
-            nullSiVacio($reserva['fecha_vuelo_salida'] ?? null),
+            $nullSiVacio($reserva['hora_vuelo_salida'] ?? null),
+            $nullSiVacio($reserva['fecha_vuelo_salida'] ?? null),
             $reserva['num_viajeros'] ?? 1,
             $reserva['id_vehiculo'],
         ]);
@@ -119,56 +124,6 @@ class Reserva extends Model
             $id
         ]);
     }
-    // public function update($id, $reserva)
-    // {
-    //     // === Validación de datos ===  
-    //     //$reserva['id_reserva'] = $id;
-    //     $this->validar($reserva, true);
-
-    //     // === Actualización en base de datos ===
-    //     $db = $this->db();
-
-    //     // Actualiza la fecha de modificación automáticamente
-    //     $fecha_modificacion = date('Y-m-d H:i:s');
-
-    //     function nullSiVacio($valor)
-    //     {
-    //         return ($valor === '' || !isset($valor)) ? null : $valor;
-    //     }
-
-    //     $stmt = $db->prepare("UPDATE transfer_reservas SET 
-    //         id_hotel = ?, 
-    //         id_tipo_reserva = ?, 
-    //         id_viajero = ?, 
-    //         fecha_modificacion = ?,
-    //         id_destino = ?, 
-    //         fecha_entrada = ?, 
-    //         hora_entrada = ?, 
-    //         numero_vuelo_entrada = ?, 
-    //         origen_vuelo_entrada = ?, 
-    //         hora_vuelo_salida = ?, 
-    //         fecha_vuelo_salida = ?, 
-    //         num_viajeros = ?, 
-    //         id_vehiculo = ?
-    //         WHERE id_reserva = ?");
-
-    //     return $stmt->execute([
-    //         nullSiVacio($reserva['id_hotel']),
-    //         $reserva['id_tipo_reserva'],
-    //         $reserva['id_viajero'],
-    //         $fecha_modificacion,
-    //         $reserva['id_destino'],
-    //         nullSiVacio($reserva['fecha_entrada']),
-    //         nullSiVacio($reserva['hora_entrada']),
-    //         $reserva['numero_vuelo_entrada'],
-    //         $reserva['origen_vuelo_entrada'],
-    //         nullSiVacio($reserva['hora_vuelo_salida']),
-    //         nullSiVacio($reserva['fecha_vuelo_salida']),
-    //         $reserva['num_viajeros'],
-    //         $reserva['id_vehiculo'],
-    //         $id
-    //     ]);
-    // }
 
     /**
      * Elimina una reserva por su ID
@@ -184,21 +139,6 @@ class Reserva extends Model
 
     // ================== MÉTODOS AUXILIARES (HELPERS) ==================
 
-    /**
-     * Convierte un valor vacío en null para inserts/updates.
-     */
-    private function nullSiVacio($valor)
-    {
-        return (isset($valor) && $valor !== '' && strtolower($valor) !== 'null') ? $valor : null;
-    }
-
-
-    /**
-     * Valida los datos de la reserva antes de crear o actualizar.
-     * @param array $datos
-     * @param bool $esUpdate
-     * @throws Exception Si hay algún error
-     */
     /**
      * Valida los datos de la reserva antes de crear o actualizar.
      * @param array $datos

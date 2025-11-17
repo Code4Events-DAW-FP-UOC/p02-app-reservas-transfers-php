@@ -130,6 +130,40 @@ class User extends Model
     // ================== MÉTODOS AUXILIARES (HELPERS) ==================
 
     /**
+     * Crea un nuevo usuario y devuelve su ID autoincremental.
+     * @param array $usuario Datos del usuario
+     * @return int|null ID insertado o null si falla
+     */
+    public function createAndReturnId($usuario)
+    {
+        $this->validar($usuario, false);
+
+        $db = $this->db();
+        $hashPassword = password_hash($usuario['password'], PASSWORD_DEFAULT);
+        $stmt = $db->prepare("INSERT INTO transfer_viajeros
+        (nombre, apellido1, apellido2, direccion, codigoPostal, ciudad, pais, email, password, rol)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        $ok = $stmt->execute([
+            $usuario['nombre'],
+            $usuario['apellido1'],
+            $usuario['apellido2'],
+            $usuario['direccion'],
+            $usuario['codigoPostal'],
+            $usuario['ciudad'],
+            $usuario['pais'],
+            $usuario['email'],
+            $hashPassword,
+            $usuario['rol'],
+        ]);
+
+        if (!$ok) {
+            throw new Exception("Error al crear el viajero");
+        }
+        return $db->lastInsertId();
+    }
+
+    /**
      * Cambia la contraseña de la usuario
      * @param int $id
      * @param string $nuevoPassword (en texto plano)

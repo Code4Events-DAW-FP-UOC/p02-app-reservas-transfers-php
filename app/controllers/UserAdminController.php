@@ -145,143 +145,94 @@ class UserAdminController extends Controller
     public function nuevaReserva()
     {
         $this->requireAdmin();
+
+        $tipoReservaModel = new TipoReserva();
+        $hotelModel = new Hotel();
+        $vehiculoModel = new Vehiculo();
+        $viajeroModel = new User(); // o Viajero, según cómo tengas el modelo
+        $reservaModel = new Reserva();
+
+        $tiposReserva = $tipoReservaModel->getAll();
+        $hoteles = $hotelModel->getAll();
+        $vehiculos = $vehiculoModel->getAll();
+        $viajeros = $viajeroModel->getAll();
+
         $error = null;
         $success = null;
 
-        // Carga datos necesarios para mostrar el formulario (en GET o si hay error en POST)
-        $userModel      = $this->model('User');
-        $hotelModel     = $this->model('Hotel');
-        $vehiculoModel  = $this->model('Vehiculo');
-        $tipoReservaModel = $this->model('TipoReserva');
-
-        $viajeros   = $userModel->getAll();
-        $hoteles    = $hotelModel->getAll();
-        $vehiculos  = $vehiculoModel->getAll();
-        $tiposReserva = $tipoReservaModel->getAll();
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            try {
-                $id_tipo_reserva = $_POST['id_tipo_reserva'] ?? '';
-                $id_hotel        = null;
-                $num_viajeros    = $_POST['num_viajeros'] ?? 1;
-                $id_vehiculo     = $_POST['id_vehiculo'] ?? '';
-                $id_viajero      = $_POST['id_viajero'] ?? '';
-                $id_destino      = $_POST['id_hotel'] ?? '';
-
-                // === Datos según tipo de reserva ===
-                // Aeropuerto->Hotel
-                $fecha_entrada       = $_POST['fecha_entrada'] ?? null;
-                $hora_entrada        = $_POST['hora_entrada'] ?? null;
-                $numero_vuelo_entrada = $_POST['numero_vuelo_entrada'] ?? null;
-                $origen_vuelo_entrada = $_POST['origen_vuelo_entrada'] ?? null;
-
-                // Hotel->Aeropuerto
-                $fecha_vuelo_salida  = $_POST['fecha_vuelo_salida'] ?? null;
-                $hora_vuelo_salida   = $_POST['hora_vuelo_salida'] ?? null;
-                $numero_vuelo_salida = $_POST['numero_vuelo_salida'] ?? null;
-                $hora_entrada_salida = $_POST['hora_entrada_salida'] ?? null; // Recogida
-
-                // === Crear nuevo viajero si no se selecciona uno existente ===
-                if (empty($id_viajero)) {
-                    $nombre      = trim($_POST['nombre'] ?? '');
-                    $apellido1   = trim($_POST['apellido1'] ?? '');
-                    $apellido2   = trim($_POST['apellido2'] ?? '');
-                    $email       = trim($_POST['email'] ?? '');
-                    // Puedes añadir aquí otros campos como teléfono, etc.
-
-                    if (!$nombre || !$apellido1 || !$email) {
-                        throw new Exception('Los datos del nuevo viajero son obligatorios.');
-                    }
-
-                    // ¿Ya existe ese email?
-                    $existe = $userModel->getByEmail($email);
-                    if ($existe) {
-                        $id_viajero = $existe['id_viajero'];
-                    } else {
-                        // Inserta el viajero con datos básicos. Rol por defecto: particular.
-                        $ok = $userModel->create([
-                            'nombre'       => $nombre,
-                            'apellido1'    => $apellido1,
-                            'apellido2'    => $apellido2,
-                            'direccion'    => '', // Opcional
-                            'codigoPostal' => '',
-                            'ciudad'       => '',
-                            'pais'         => '',
-                            'email'        => $email,
-                            'password'     => password_hash(uniqid(), PASSWORD_DEFAULT), // Genera una contraseña aleatoria para que no pueda acceder
-                            'rol'          => 'particular'
-                        ]);
-                        if (!$ok) throw new Exception("No se pudo crear el viajero.");
-                        $nuevoViajero = $userModel->getByEmail($email);
-                        $id_viajero = $nuevoViajero['id_viajero'];
-                    }
-                }
-
-                // ==== Preparar datos para la reserva ====
-                $reserva = [
-                    'id_tipo_reserva'       => $id_tipo_reserva,
-                    'id_hotel'              => $id_hotel,
-                    'id_viajero'            => $id_viajero,
-                    'num_viajeros'          => $num_viajeros,
-                    'id_vehiculo'           => $id_vehiculo,
-                    'fecha_reserva'         => date('Y-m-d H:i:s'),
-                    'fecha_modificacion'    => date('Y-m-d H:i:s'),
-                    // Aeropuerto->Hotel:
-                    'fecha_entrada'         => $fecha_entrada,
-                    'hora_entrada'          => $hora_entrada,
-                    'numero_vuelo_entrada'  => $numero_vuelo_entrada,
-                    'origen_vuelo_entrada'  => $origen_vuelo_entrada,
-                    // Hotel->Aeropuerto:
-                    'fecha_vuelo_salida'    => $fecha_vuelo_salida,
-                    'hora_vuelo_salida'     => $hora_vuelo_salida,
-                    'numero_vuelo_salida'   => $numero_vuelo_salida,
-                    'hora_entrada_salida'   => $hora_entrada_salida,
-                    // Destino: en la BD tu campo puede llamarse distinto, revisa.
-                    'id_destino'            => $id_destino,
+            // 1. Comprobar si se usa viajero existente o se crea nuevo
+            $id_viajero = $_POST['id_viajero'] ?? '';
+            if (empty($id_viajero)) {
+                // CREAR NUEVO VIAJERO
+                $nuevoViajero = [
+                    'nombre'      => trim($_POST['nombre'] ?? ''),
+                    'apellido1'   => trim($_POST['apellido1'] ?? ''),
+                    'apellido2'   => trim($_POST['apellido2'] ?? ''),
+                    'direccion'   => trim($_POST['direccion'] ?? ''),
+                    'codigoPostal' => trim($_POST['codigoPostal'] ?? ''),
+                    'ciudad'      => trim($_POST['ciudad'] ?? ''),
+                    'pais'        => trim($_POST['pais'] ?? ''),
+                    'email'       => trim($_POST['email'] ?? ''),
+                    'password'    => $_POST['password'] ?? '',
+                    'rol'         => 'particular', // o el rol que corresponda
                 ];
 
-                // === Lógica según tipo de reserva para validar y ajustar campos ===
-                if ($id_tipo_reserva == 1) { // Aeropuerto→Hotel
-                    if (!$fecha_entrada || !$hora_entrada || !$numero_vuelo_entrada || !$origen_vuelo_entrada) {
-                        throw new Exception('Faltan datos para la reserva Aeropuerto→Hotel');
-                    }
-                }
-                if ($id_tipo_reserva == 2) { // Hotel→Aeropuerto
-                    if (!$fecha_vuelo_salida || !$hora_vuelo_salida || !$numero_vuelo_salida || !$hora_entrada_salida) {
-                        throw new Exception('Faltan datos para la reserva Hotel→Aeropuerto');
-                    }
-                }
-                if ($id_tipo_reserva == 3) { // Ida y vuelta
-                    if (
-                        !$fecha_entrada || !$hora_entrada || !$numero_vuelo_entrada || !$origen_vuelo_entrada ||
-                        !$fecha_vuelo_salida || !$hora_vuelo_salida || !$numero_vuelo_salida || !$hora_entrada_salida
-                    ) {
-                        throw new Exception('Faltan datos para la reserva de ida y vuelta.');
-                    }
-                }
-
-                // === Crear la reserva ===
-                $reservaModel = $this->model('Reserva');
-                $ok = $reservaModel->create($reserva);
-
-                if ($ok) {
-                    $success = "Reserva creada correctamente.";
+                // Validar contraseñas iguales
+                if (($nuevoViajero['password'] ?? '') !== ($_POST['confirm'] ?? '')) {
+                    $error = "Las contraseñas no coinciden.";
                 } else {
-                    $error = "No se pudo crear la reserva.";
+                    try {
+                        // Llama a un método que cree el usuario y devuelva su ID
+                        $id_viajero = $viajeroModel->createAndReturnId($nuevoViajero);
+                    } catch (Exception $ex) {
+                        $error = $ex->getMessage();
+                    }
                 }
-            } catch (Exception $e) {
-                $error = $e->getMessage();
+            }
+
+            // Si NO hay error, continúa con la reserva
+            if (!$error && $id_viajero) {
+                // Recolecta datos de reserva
+                $reserva = [
+                    'id_tipo_reserva'      => $_POST['id_tipo_reserva'] ?? null,
+                    'id_hotel'             => $_POST['id_hotel'] ?? null,
+                    'id_viajero'           => $id_viajero,
+                    'fecha_reserva'        => date('Y-m-d H:i:s'),
+                    'fecha_modificacion'   => date('Y-m-d H:i:s'),
+                    'id_destino'           => $_POST['id_hotel'] ?? null,
+                    'fecha_entrada'        => $_POST['fecha_entrada'] ?? null,
+                    'hora_entrada'         => $_POST['hora_entrada'] ?? null,
+                    'numero_vuelo_entrada' => $_POST['numero_vuelo_entrada'] ?? null,
+                    'origen_vuelo_entrada' => $_POST['origen_vuelo_entrada'] ?? null,
+                    'hora_vuelo_salida'    => $_POST['hora_vuelo_salida'] ?? null,
+                    'fecha_vuelo_salida'   => $_POST['fecha_vuelo_salida'] ?? null,
+                    'numero_vuelo_salida'  => $_POST['numero_vuelo_salida'] ?? null,
+                    'hora_entrada_salida'  => $_POST['hora_entrada_salida'] ?? null,
+                    'num_viajeros'         => $_POST['num_viajeros'] ?? 1,
+                    'id_vehiculo'          => $_POST['id_vehiculo'] ?? null,
+                ];
+
+                try {
+                    $ok = $reservaModel->create($reserva);
+                    if ($ok) {
+                        $success = "¡Reserva creada correctamente!";
+                    } else {
+                        $error = "Error al crear la reserva.";
+                    }
+                } catch (Exception $ex) {
+                    $error = $ex->getMessage();
+                }
             }
         }
 
-        // Carga la vista, siempre pasando los arrays para los select
         $this->view('userAdmin/nuevaReserva', [
             'error'        => $error,
             'success'      => $success,
-            'viajeros'     => $viajeros,
+            'tiposReserva' => $tiposReserva,
             'hoteles'      => $hoteles,
             'vehiculos'    => $vehiculos,
-            'tiposReserva' => $tiposReserva,
+            'viajeros'     => $viajeros,
         ]);
     }
 
