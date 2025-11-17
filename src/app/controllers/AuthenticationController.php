@@ -26,8 +26,9 @@ class AuthenticationController extends Controller {
 
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id_viajero'];
-                $_SESSION['user_role'] = $user['rol'];
+                $_SESSION['user_rol'] = $user['rol'];
                 $_SESSION['username'] = $user['nombre'];
+                $_SESSION['email'] = $user['email'];
                 header('Location: /');
                 exit;
             } else {
@@ -93,7 +94,7 @@ class AuthenticationController extends Controller {
     // Logout
     public function logout() {
         session_destroy();
-        header('Location: /');
+        header('Location: /login');
         exit;
     }
 }

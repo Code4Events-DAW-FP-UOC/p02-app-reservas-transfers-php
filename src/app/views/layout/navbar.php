@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 // Saber si está logueado
 $isLoggedIn = isset($_SESSION['user_id']);
-$rol = $isLoggedIn ? $_SESSION['user_role'] : null;
+$rol = $isLoggedIn ? $_SESSION['user_rol'] : null;
 ?>
 
 <nav class="navbar bg-light">
@@ -27,24 +27,34 @@ $rol = $isLoggedIn ? $_SESSION['user_role'] : null;
                 </li>
             </ul>
         </div>
-                        
-            <ul class="navbar-nav flex-row align-items-center px-5">
-                <?php if ($isLoggedIn): ?>
-                    <li class="nav-item">
-                        <span class="navbar-text me-3">Hola, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                    </li>
-                    <li class="nav-item">
-                       <a class="btn btn-outline-light" href="/logout">LOGOUT</a>
-                    </li>
+        <div class="dropdown ms-auto px-5">      
+                <?php if ($isLoggedIn): ?> 
+                        <a class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Hola, <?php echo htmlspecialchars($_SESSION['username']); ?>
+                        </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="/perfil">
+                                Perfil
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="/logout">
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
                 <?php else: ?>
+                <ul class="navbar-nav d-flex flex-row align-items-center">
                     <li class="nav-item">
                         <a class="btn btn-outline-light" href="/register">SIGN UP</a>
                     </li>
                     <li class="nav-item ms-2">
                         <a class="btn btn-outline-light" href="/login">LOG IN</a>
                     </li>
+                </ul>
                 <?php endif; ?>
-            </ul>
+        </div>
     </div>
 </nav>
 </header>

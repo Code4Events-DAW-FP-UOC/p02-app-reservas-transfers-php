@@ -52,16 +52,12 @@ body {
   border-color: #0097a7 !important;
 }
 
-/* Encabezados */
-h1,
-h2,
-h3 {
-  color: var(--color-header);
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
 h1 {
   margin-bottom: 0.7rem;
+}
+
+.bg-dark .custom-heading {
+    color: var(--color-neutro) !important;
 }
 
 /* Footer */
@@ -74,50 +70,3 @@ footer.footer {
   margin-top: 4em;
 }
 
-/* Hero sección con carrusel */
-.hero-carousel {
-  position: relative;
-  height: 100vh;
-  min-height: 400px;
-  overflow: hidden;
-}
-
-.hero-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-  opacity: 0.8; /* puedes ajustar la opacidad */
-  transition: background-image 0.8s;
-}
-
-.hero-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
-  color: #fff;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-  /* Centrado por flex */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.hero-content h1,
-.hero-content .lead {
-  color: #fff;
-}
-
-.hero-carousel .carousel-inner,
-.hero-carousel .carousel-item,
-.hero-bg {
-  height: 100vh;
-}

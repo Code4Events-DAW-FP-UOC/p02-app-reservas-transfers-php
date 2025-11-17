@@ -16,6 +16,11 @@ class Router {
             '/adminpanel/reservar' => ['AdminController', 'nuevaReserva'],
             '/adminpanel/eliminar' => ['AdminController', 'eliminarReserva'],
             '/adminpanel/editar' => ['AdminController', 'editarReserva'],
+            '/userpanel/reservar' => ['ParticularController', 'nuevaReserva'],
+            '/userpanel/eliminar' => ['ParticularController', 'eliminarReserva'],
+            '/userpanel/editar' => ['ParticularController', 'editarReserva'],
+            '/perfil' => ['PerfilController', 'panel'],
+            '/perfil/editar' => ['PerfilController', 'updatePerfil'],
         ];
     }
 

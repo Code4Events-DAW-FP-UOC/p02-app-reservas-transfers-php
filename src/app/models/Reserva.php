@@ -23,7 +23,12 @@ class Reserva extends Model {
                 vh.Descripción AS vehiculo_desc,
                 r.num_viajeros,
                 r.numero_vuelo_entrada,
-                r.id_reserva             
+                r.id_reserva,
+                r.fecha_entrada,
+                r.hora_entrada,
+                r.origen_vuelo_entrada,
+                r.fecha_vuelo_salida,
+                r.hora_vuelo_salida             
             FROM 
                 transfer_reservas AS r
             LEFT JOIN 
@@ -46,10 +51,9 @@ class Reserva extends Model {
         return $stmt->execute([$id]);
     }
 
-    public function updateUser($id, $localizador, $id_hotel, $id_tipo_reserva, $email, $fecha_reserva, $fecha_modificacion, $id_destino, $fecha_entrada, $hora_entrada, $numero_vuelo_entrada, $origen_vuelo_entrada, $hora_vuelo_salida, $fecha_vuelo_salida, $num_viajeros, $id_vehiculo) {
-        $passwordHasheada = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->pdo->prepare("UPDATE `transfer_reservas` SET `localizador` = ?, `id_hotel` = ?, `id_tipo_reserva` = ?, `email` = ?, `fecha_reserva` = ?, `fecha_modificacion` = ?, `id_destino` = ?, `fecha_entrada` = ?, `hora_entrada` = ?,`numero_vuelo_entrada` = ?,`origen_vuelo_entrada` = ?,`hora_vuelo_salida` = ?,`fecha_vuelo_salida` = ?,`num_viajeros` = ?,`id_vehiculo` = ? WHERE id_reserva = ?");
+    public function updateReserva($id, $localizador, $id_hotel, $id_tipo_reserva, $email, $fecha_reserva, $fecha_modificacion, $id_destino, $fecha_entrada, $hora_entrada, $numero_vuelo_entrada, $origen_vuelo_entrada, $hora_vuelo_salida, $fecha_vuelo_salida, $num_viajeros, $id_vehiculo) {
+        $stmt = $this->pdo->prepare("UPDATE `transfer_reservas` SET `localizador` = ?, `id_hotel` = ?, `id_tipo_reserva` = ?, `email_cliente` = ?, `fecha_reserva` = ?, `fecha_modificacion` = ?, `id_destino` = ?, `fecha_entrada` = ?, `hora_entrada` = ?,`numero_vuelo_entrada` = ?,`origen_vuelo_entrada` = ?,`hora_vuelo_salida` = ?,`fecha_vuelo_salida` = ?,`num_viajeros` = ?,`id_vehiculo` = ? WHERE id_reserva = ?");
         $stmt->execute([$localizador, $id_hotel, $id_tipo_reserva, $email, $fecha_reserva, $fecha_modificacion, $id_destino, $fecha_entrada, $hora_entrada, $numero_vuelo_entrada, $origen_vuelo_entrada, $hora_vuelo_salida, $fecha_vuelo_salida, $num_viajeros, $id_vehiculo, $id]);
-        return $stmt->rowCount() == 0;
+        return $stmt->rowCount() >= 0;
     }
 }

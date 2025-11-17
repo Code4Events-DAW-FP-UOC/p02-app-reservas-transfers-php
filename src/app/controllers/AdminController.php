@@ -28,29 +28,27 @@ class AdminController extends Controller{
     public function panel(){
 
         $lista_reservas = $this->reservaModel->getReservas();
+        $lista_hoteles = $this->hotelModel->getHoteles();
+        $lista_usuarios = $this->userModel->getUsers();
+        $lista_vehiculos = $this->vehiculoModel->getVehiculos();
 
         $this->data['lista_reservas'] = $lista_reservas;
+        $this->data['lista_hoteles'] = $lista_hoteles;
+        $this->data['lista_usuarios'] = $lista_usuarios;
+        $this->data['lista_vehiculos'] = $lista_vehiculos;
 
         $this->view('admin_panel', $this->data);
         
     }
 
     public function nuevaReserva() {
-        $tipo_reserva = '';
-        $lista_hoteles = '';
-        $lista_usuarios = '';
-        $lista_vehiculos = '';
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             $accion = $_POST['accion'] ?? '';
             $tipo_reserva = $_POST['id_tipo_reserva'] ?? 0;
 
-            if($accion == 'seleccionar_tipo'){
-                $lista_hoteles = $this->hotelModel->getHoteles();
-                $lista_usuarios = $this->userModel->getUsers();
-                $lista_vehiculos = $this->vehiculoModel->getVehiculos();
-            }elseif($accion == 'crear_reserva') {
+            if($accion == 'crear_reserva') {
                 $fecha_entrada = $_POST['fecha_entrada'] ?? '';
                 $hora_entrada = $_POST['hora_entrada'] ?? '';
                 $numero_vuelo_entrada = trim($_POST['numero_vuelo_entrada'] ?? '');
@@ -73,9 +71,6 @@ class AdminController extends Controller{
                 }
                 if (empty($fecha_vuelo_salida)) {
                     $fecha_vuelo_salida = date('Y-m-d');
-                    echo "¡ENTRÓ AQUÍ! Fecha de entrada estaba vacía.\n";
-                    echo "Valor asignado: " . $fecha_entrada . "\n";
-                    die();
                 }
                 if (empty($hora_vuelo_salida_raw)) {
                     $hora_vuelo_salida = date('Y-m-d H:i:s'); 
@@ -87,7 +82,7 @@ class AdminController extends Controller{
                     header('Location: /adminpanel');
                     exit;
                 } else {
-                    $_SESSION['error'] = 'Error al añid reserva';
+                    $_SESSION['error'] = 'Error al añadir reserva';
                     header('Location: /adminpanel');
                     exit;
                 }
@@ -95,9 +90,6 @@ class AdminController extends Controller{
         }
 
         $this->data['tipo_reserva'] = $tipo_reserva;
-        $this->data['lista_hoteles'] = $lista_hoteles;
-        $this->data['lista_usuarios'] = $lista_usuarios;
-        $this->data['lista_vehiculos'] = $lista_vehiculos;
 
         $this->panel();
         
@@ -120,8 +112,43 @@ class AdminController extends Controller{
     }
 
     public function editarReserva(){
-        header('Location: /adminpanel');
-        exit;
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+            $id_reserva = $_POST['id_reserva'];
+
+            $reserva_antigua = $this->reservaModel->findById($id_reserva);
+            $hora_antigua_normalizada = date('H:i:s', strtotime($reserva_antigua['hora_vuelo_salida']));
+
+            //$tipo_reserva = $_POST['id_tipo_reserva'] ?? 0;
+
+            $id_tipo_reserva = empty($_POST['id_tipo_reserva']) ? $reserva_antigua['id_tipo_reserva'] : $_POST['id_tipo_reserva'];
+            $fecha_entrada = empty($_POST['fecha_entrada']) ? $reserva_antigua['fecha_entrada'] : $_POST['fecha_entrada'];
+            $hora_entrada = empty($_POST['hora_entrada']) ? $reserva_antigua['hora_entrada'] : $_POST['hora_entrada'];
+            $numero_vuelo_entrada = empty(trim($_POST['numero_vuelo_entrada'])) ? $reserva_antigua['numero_vuelo_entrada'] : trim($_POST['numero_vuelo_entrada']) ;
+            $origen_vuelo_entrada = empty(trim($_POST['origen_vuelo_entrada'])) ? $reserva_antigua['origen_vuelo_entrada'] : trim($_POST['origen_vuelo_entrada']);
+            $fecha_vuelo_salida = empty($_POST['fecha_vuelo_salida']) ? $reserva_antigua['fecha_vuelo_salida'] : $_POST['fecha_vuelo_salida'];
+            $hora_vuelo_salida_raw = empty($_POST['hora_vuelo_salida']) ? $hora_antigua_normalizada : $_POST['hora_vuelo_salida'];
+            $id_hotel = empty($_POST['id_hotel']) ? $reserva_antigua['id_hotel'] : $_POST['id_hotel'];
+            $email_usuario = empty($_POST['email_usuario']) ? $reserva_antigua['email_usuario'] : $_POST['email_usuario'];
+            $num_viajeros = empty(trim($_POST['num_viajeros'])) ? $reserva_antigua['num_viajeros'] : trim($_POST['num_viajeros']);
+            $id_vehiculo = empty($_POST['id_vehiculo']) ? $reserva_antigua['id_vehiculo'] : $_POST['id_vehiculo'];
+            $fecha_reserva = $reserva_antigua['fecha_reserva'];
+            $fecha_modificacion =  date('Y-m-d H:i:s');
+            $localizador = $reserva_antigua['localizador'];
+            $id = $reserva_antigua['id_reserva'];
+            
+            $hora_vuelo_salida = $fecha_vuelo_salida . ' ' . $hora_vuelo_salida_raw;
+
+            if($this->reservaModel->updateReserva($id, $localizador, $id_hotel, $id_tipo_reserva, $email_usuario, $fecha_reserva, $fecha_modificacion, $id_hotel, $fecha_entrada, $hora_entrada, $numero_vuelo_entrada, $origen_vuelo_entrada, $hora_vuelo_salida, $fecha_vuelo_salida, $num_viajeros, $id_vehiculo)){
+                $_SESSION['success'] = 'Reserva modificada';
+                header('Location: /adminpanel');
+                exit;
+            } else {
+                $_SESSION['error'] = 'Error al modificar reserva';
+                header('Location: /adminpanel');
+                exit;
+            }
+        }
     }
 
     public function generarLocalizador(){
