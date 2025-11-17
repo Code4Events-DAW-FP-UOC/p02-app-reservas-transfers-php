@@ -29,9 +29,9 @@
                 <thead>
                     <tr>
                         <th>Hora</th>
-                        <th>Viajero</th>
                         <th>Tipo</th>
-                        <th>Hotel</th>
+                        <th>Viajero</th>
+                        <th>Reservo Hotel</th>
                         <th>Destino</th>
                         <th>Acciones</th>
                     </tr>
@@ -54,8 +54,8 @@
                         ?>
                             <tr>
                                 <td><span class="badge bg-<?= $color ?>"><?= $hora ?></span></td>
-                                <td><?= $nombre ?></td>
                                 <td><?= htmlspecialchars($r['descripcion_tipo'] ?? '-') ?></td>
+                                <td><?= $nombre ?></td>
                                 <td><?= htmlspecialchars($r['nombre_hotel'] ?? '-') ?></td>
                                 <td><?= htmlspecialchars($r['destino_hotel'] ?? '-') ?></td>
                                 <td>
