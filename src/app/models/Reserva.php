@@ -29,7 +29,20 @@ class Reserva extends Model {
                 r.origen_vuelo_entrada,
                 r.fecha_vuelo_salida,
                 r.hora_vuelo_salida,
-                vc.email AS email_creador            
+                vc.email AS email_creador,
+
+                -- IDs de Claves Foráneas (Necesarias para rellenar los SELECT/Combos en el formulario)
+                r.id_tipo_reserva,
+                r.id_destino AS id_hotel, 
+                r.email_cliente AS id_viajero_cliente, 
+                r.id_vehiculo,
+                
+                -- Datos de las tablas unidas (Necesarios para la visualización/lógica del controlador)
+                tr.Descripción AS tipo_reserva_desc,
+                h.nombre_hotel,
+                v.email AS email_cliente,
+                vh.Descripción AS vehiculo_desc,
+                vc.email AS email_creador      
             FROM 
                 transfer_reservas AS r
             LEFT JOIN 

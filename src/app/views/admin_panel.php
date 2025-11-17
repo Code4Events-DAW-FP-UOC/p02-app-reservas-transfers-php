@@ -328,7 +328,7 @@ $today = date('Y-m-d');
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label">Numero de Vuelo de Vuelta</label>
-                                                        <input type="text" class="form-control" name="numero_vuelo_entrada" value="<?= htmlspecialchars($reserva['numero_vuelo_entrada'])?>" <?php echo $readonly_attr; ?> required>
+                                                        <input type="text" class="form-control" name="numero_vuelo_salida" value="<?= htmlspecialchars($reserva['numero_vuelo_entrada'])?>" <?php echo $readonly_attr; ?> required>
                                                     </div>
                                                 <?php endif; ?>
                                                 <!--

@@ -130,7 +130,7 @@ class ParticularController extends Controller{
             $fecha_vuelo_salida = empty($_POST['fecha_vuelo_salida']) ? $reserva_antigua['fecha_vuelo_salida'] : $_POST['fecha_vuelo_salida'];
             $hora_vuelo_salida_raw = empty($_POST['hora_vuelo_salida']) ? $hora_antigua_normalizada : $_POST['hora_vuelo_salida'];
             $id_hotel = empty($_POST['id_hotel']) ? $reserva_antigua['id_hotel'] : $_POST['id_hotel'];
-            $email_usuario = empty($_POST['email_usuario']) ? $reserva_antigua['email_usuario'] : $_POST['email_usuario'];
+            $email_usuario = $reserva_antigua['email_cliente'];
             $num_viajeros = empty(trim($_POST['num_viajeros'])) ? $reserva_antigua['num_viajeros'] : trim($_POST['num_viajeros']);
             $id_vehiculo = empty($_POST['id_vehiculo']) ? $reserva_antigua['id_vehiculo'] : $_POST['id_vehiculo'];
             $fecha_reserva = $reserva_antigua['fecha_reserva'];

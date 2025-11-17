@@ -333,7 +333,7 @@ $future_date_unformat->modify('+48 hours');
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label">Numero de Vuelo de Vuelta</label>
-                                                        <input type="text" class="form-control" name="numero_vuelo_entrada" value="<?= htmlspecialchars($reserva['numero_vuelo_entrada'])?>" <?php echo $readonly_attr; ?> required>
+                                                        <input type="text" class="form-control" name="numero_vuelo_salida" value="<?= htmlspecialchars($reserva['numero_vuelo_entrada'])?>" <?php echo $readonly_attr; ?> required>
                                                     </div>
                                                 <?php endif; ?>
                                                 <!--
@@ -364,7 +364,7 @@ $future_date_unformat->modify('+48 hours');
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="user" style="margin-top:1rem;">Usuario</label>
-                                                    <select id="user" name="email_usuario" required style="width:100%; margin-top:0.25rem; padding:0.5rem;" <?php echo $readonly_attr; ?>>
+                                                    <select id="user" name="email_usuario" required style="width:100%; margin-top:0.25rem; padding:0.5rem;" disabled>
                                                         <option value="">Selecciona un usuario</option>
                                                         <?php
                                                         $usuario_email_actual = $reserva['email_cliente'] ?? null; 
