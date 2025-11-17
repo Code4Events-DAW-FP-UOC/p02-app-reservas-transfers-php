@@ -299,17 +299,17 @@ class Reserva extends Model
     {
         $db = $this->db();
         $stmt = $db->prepare("
-        SELECT r.*, 
-               h.nombre AS hotel_nombre, 
-               d.nombre AS destino_hotel,
-               t.descripcion AS tipo_reserva_nombre
-        FROM transfer_reservas r
-        LEFT JOIN transfer_hoteles h ON r.id_hotel = h.id_hotel
-        LEFT JOIN transfer_hoteles d ON r.id_destino = d.id_hotel
-        LEFT JOIN transfer_tipo_reservas t ON r.id_tipo_reserva = t.id_tipo_reserva
-        WHERE r.id_viajero = ?
-        ORDER BY r.fecha_reserva DESC
-    ");
+            SELECT r.*, 
+                h.nombre AS hotel_nombre, 
+                d.nombre AS destino_hotel,
+                t.descripcion AS tipo_reserva_nombre
+            FROM transfer_reservas r
+            LEFT JOIN transfer_hoteles h ON r.id_hotel = h.id_hotel
+            LEFT JOIN transfer_hoteles d ON r.id_destino = d.id_hotel
+            LEFT JOIN transfer_tipo_reservas t ON r.id_tipo_reserva = t.id_tipo_reserva
+            WHERE r.id_viajero = ?
+            ORDER BY r.fecha_reserva DESC
+        ");
         $stmt->execute([$id_viajero]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -323,17 +323,22 @@ class Reserva extends Model
     {
         $db = $this->db();
         $stmt = $db->prepare("
-        SELECT r.*, 
-               h.nombre AS hotel_nombre, 
-               d.nombre AS destino_hotel,
-               t.descripcion AS tipo_reserva_nombre
-        FROM transfer_reservas r
-        LEFT JOIN transfer_hoteles h ON r.id_hotel = h.id_hotel
-        LEFT JOIN transfer_hoteles d ON r.id_destino = d.id_hotel
-        LEFT JOIN transfer_tipo_reservas t ON r.id_tipo_reserva = t.id_tipo_reserva
-        WHERE r.id_reserva = ?
-        LIMIT 1
-    ");
+            SELECT  r.*, 
+                    h.nombre AS hotel_nombre, 
+                    d.nombre AS destino_hotel,
+                    t.descripcion AS tipo_reserva_nombre,
+                    CONCAT(v.nombre, ' ', v.apellido1) AS nombre_viajero,
+                    v.email AS email_viajero,
+                    ve.descripcion AS vehiculo_descripcion
+            FROM transfer_reservas r
+            LEFT JOIN transfer_hoteles h ON r.id_hotel = h.id_hotel
+            LEFT JOIN transfer_hoteles d ON r.id_destino = d.id_hotel
+            LEFT JOIN transfer_tipo_reservas t ON r.id_tipo_reserva = t.id_tipo_reserva
+            LEFT JOIN transfer_viajeros v ON r.id_viajero = v.id_viajero
+            LEFT JOIN transfer_vehiculos ve ON r.id_vehiculo = ve.id_vehiculo
+            WHERE r.id_reserva = ?
+            LIMIT 1
+        ");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
