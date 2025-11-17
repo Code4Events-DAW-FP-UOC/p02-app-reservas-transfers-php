@@ -9,6 +9,7 @@ if (isset($_SESSION['error'])) {
 }
 $isLoggedIn = isset($_SESSION['user_id']);
 $rol = $isLoggedIn ? $_SESSION['user_rol'] : null;
+$user_id = $isLoggedIn ? $_SESSION['user_id'] : null;
 $rol_requerido = 'administrador';
 $rol_particular = 'particular';
 
@@ -51,6 +52,7 @@ $today = date('Y-m-d');
             <h2 class="mb-4">Panel de Administración</h2>
                 
             <form action="/adminpanel/reservar" method="POST">
+                <input type="hidden" name="creador_id" value="<?php echo $user_id; ?>">
 
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
@@ -212,6 +214,7 @@ $today = date('Y-m-d');
                             <th scope="col">Vehículo</th>
                             <th scope="col">Viajeros</th>
                             <th scope="col">Vuelo</th>
+                            <th scope="col">Creada por</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
@@ -266,6 +269,7 @@ $today = date('Y-m-d');
                                 <td><?= htmlspecialchars($reserva['vehiculo_desc']) ?></td>
                                 <td><?= htmlspecialchars($reserva['num_viajeros']) ?></td>
                                 <td><?= htmlspecialchars($reserva['numero_vuelo_entrada']) ?></td>
+                                <td><?= htmlspecialchars($reserva['email_creador']) ?></td>
                                 <td class="d-flex gap-2">
                                     <a href="#<?= $collapseId ?>" data-bs-toggle="collapse" data-bs-target="#<?= $collapseId ?>" class="btn btn-sm btn-warning">
                                         Editar

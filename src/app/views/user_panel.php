@@ -8,6 +8,8 @@ if (isset($_SESSION['error'])) {
     unset($_SESSION['error']);
 }
 $isLoggedIn = isset($_SESSION['user_id']);
+$user_id = $isLoggedIn ? $_SESSION['user_id'] : null;
+$user_email = $isLoggedIn ? $_SESSION['email'] : null;
 $rol = $isLoggedIn ? $_SESSION['user_rol'] : null;
 $rol_requerido = 'particular';
 $rol_admin = 'administrador';
@@ -57,6 +59,7 @@ $future_date_unformat->modify('+48 hours');
             <h2 class="mb-4">Panel de Usuario Particular</h2>
                 
             <form action="/userpanel/reservar" method="POST">
+                <input type="hidden" name="creador_id" value="<?php echo $user_id; ?>">
 
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
@@ -206,6 +209,7 @@ $future_date_unformat->modify('+48 hours');
                             <th scope="col">Vehículo</th>
                             <th scope="col">Viajeros</th>
                             <th scope="col">Vuelo</th>
+                            <th scope="col">Creada por</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
@@ -262,6 +266,15 @@ $future_date_unformat->modify('+48 hours');
                                 <td><?= htmlspecialchars($reserva['vehiculo_desc']) ?></td>
                                 <td><?= htmlspecialchars($reserva['num_viajeros']) ?></td>
                                 <td><?= htmlspecialchars($reserva['numero_vuelo_entrada']) ?></td>
+                                <?php 
+                                    $creador;
+                                    if($reserva['email_creador'] == $user_email){
+                                        $creador = "Tu";
+                                    }else{
+                                        $creador = "Admin";
+                                    }
+                                ?>
+                                <td><?= htmlspecialchars($creador) ?></td>
                                 <td class="d-flex gap-2">
                                     <a href="#<?= $collapseId ?>" data-bs-toggle="collapse" data-bs-target="#<?= $collapseId ?>" class="btn btn-sm btn-warning **flex-grow-1**">
                                         Editar

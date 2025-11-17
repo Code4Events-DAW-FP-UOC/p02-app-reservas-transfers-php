@@ -8,9 +8,9 @@ class Reserva extends Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create($localizador, $id_hotel, $id_tipo_reserva, $email, $fecha_reserva, $fecha_modificacion, $id_destino, $fecha_entrada, $hora_entrada, $numero_vuelo_entrada, $origen_vuelo_entrada, $hora_vuelo_salida, $fecha_vuelo_salida, $num_viajeros, $id_vehiculo) {
-        $stmt = $this->pdo->prepare("INSERT INTO `transfer_reservas` (`localizador`, `id_hotel`, `id_tipo_reserva`, `email_cliente`, `fecha_reserva`, `fecha_modificacion`, `id_destino`, `fecha_entrada`, `hora_entrada`,`numero_vuelo_entrada`, `origen_vuelo_entrada`, `hora_vuelo_salida`, `fecha_vuelo_salida`, `num_viajeros`, `id_vehiculo`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        return $stmt->execute([$localizador, $id_hotel, $id_tipo_reserva, $email, $fecha_reserva, $fecha_modificacion, $id_destino, $fecha_entrada, $hora_entrada, $numero_vuelo_entrada, $origen_vuelo_entrada, $hora_vuelo_salida, $fecha_vuelo_salida, $num_viajeros, $id_vehiculo]);
+    public function create($localizador, $id_hotel, $id_tipo_reserva, $email, $fecha_reserva, $fecha_modificacion, $id_destino, $fecha_entrada, $hora_entrada, $numero_vuelo_entrada, $origen_vuelo_entrada, $hora_vuelo_salida, $fecha_vuelo_salida, $num_viajeros, $id_vehiculo, $creador_id) {
+        $stmt = $this->pdo->prepare("INSERT INTO `transfer_reservas` (`localizador`, `id_hotel`, `id_tipo_reserva`, `email_cliente`, `fecha_reserva`, `fecha_modificacion`, `id_destino`, `fecha_entrada`, `hora_entrada`,`numero_vuelo_entrada`, `origen_vuelo_entrada`, `hora_vuelo_salida`, `fecha_vuelo_salida`, `num_viajeros`, `id_vehiculo`, `id_creador`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        return $stmt->execute([$localizador, $id_hotel, $id_tipo_reserva, $email, $fecha_reserva, $fecha_modificacion, $id_destino, $fecha_entrada, $hora_entrada, $numero_vuelo_entrada, $origen_vuelo_entrada, $hora_vuelo_salida, $fecha_vuelo_salida, $num_viajeros, $id_vehiculo, $creador_id]);
     }
 
     public function getReservas() {
@@ -28,7 +28,8 @@ class Reserva extends Model {
                 r.hora_entrada,
                 r.origen_vuelo_entrada,
                 r.fecha_vuelo_salida,
-                r.hora_vuelo_salida             
+                r.hora_vuelo_salida,
+                vc.email AS email_creador            
             FROM 
                 transfer_reservas AS r
             LEFT JOIN 
@@ -39,6 +40,8 @@ class Reserva extends Model {
                 transfer_viajeros AS v ON r.email_cliente = v.id_viajero
             LEFT JOIN 
                 transfer_vehiculo AS vh ON r.id_vehiculo = vh.id_vehiculo
+            LEFT JOIN
+                transfer_viajeros AS vc ON r.id_creador = vc.id_viajero
             ORDER BY 
                 r.fecha_modificacion DESC";
         $stmt = $this->pdo->prepare($sql);

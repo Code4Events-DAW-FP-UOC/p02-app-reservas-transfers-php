@@ -62,6 +62,7 @@ class ParticularController extends Controller{
                 $fecha_reserva = date('Y-m-d H:i:s');
                 $fecha_modificacion = $fecha_reserva;
                 $localizador = $this->generarLocalizador();
+                $creador_id = $_POST['creador_id'] ?? 0;
 
                 if (empty($fecha_entrada)) {
                     $fecha_entrada = date('Y-m-d');
@@ -77,7 +78,7 @@ class ParticularController extends Controller{
                 }else{
                     $hora_vuelo_salida = $fecha_vuelo_salida . ' ' . $hora_vuelo_salida_raw;
                 }
-                if($this->reservaModel->create($localizador, $id_hotel, $tipo_reserva, $email_usuario, $fecha_reserva, $fecha_modificacion, $id_hotel, $fecha_entrada, $hora_entrada, $numero_vuelo_entrada, $origen_vuelo_entrada, $hora_vuelo_salida, $fecha_vuelo_salida, $num_viajeros, $id_vehiculo)){
+                if($this->reservaModel->create($localizador, $id_hotel, $tipo_reserva, $email_usuario, $fecha_reserva, $fecha_modificacion, $id_hotel, $fecha_entrada, $hora_entrada, $numero_vuelo_entrada, $origen_vuelo_entrada, $hora_vuelo_salida, $fecha_vuelo_salida, $num_viajeros, $id_vehiculo, $creador_id)){
                     $_SESSION['success'] = 'Reserva añadida';
                     header('Location: /userpanel');
                     exit;

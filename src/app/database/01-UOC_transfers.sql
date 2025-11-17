@@ -48,7 +48,7 @@ CREATE TABLE `transfer_reservas` (
 `localizador` varchar(100) NOT NULL,
 `id_hotel` int(11) DEFAULT NULL COMMENT 'Es el hotel que realiza la reserva',
 `id_tipo_reserva` int(11) NOT NULL,
-`email_cliente` int(11) NOT NULL, -- cambiamos por id
+`email_cliente` int(11) NOT NULL, -- se llama email, pero es id
 `fecha_reserva` datetime NOT NULL,
 `fecha_modificacion` datetime NOT NULL,
 `id_destino` int(11) NOT NULL,
@@ -60,7 +60,8 @@ CREATE TABLE `transfer_reservas` (
 current_timestamp(),
 `fecha_vuelo_salida` date NOT NULL,
 `num_viajeros` int(11) NOT NULL,
-`id_vehiculo` int(11) NOT NULL
+`id_vehiculo` int(11) NOT NULL,
+`id_creador` int(11) NOT NULL -- guardamos id del usuario creador de reserva
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 --

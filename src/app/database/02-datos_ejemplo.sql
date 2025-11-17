@@ -100,7 +100,7 @@ INSERT INTO `transfer_reservas` (
     `id_reserva`, `localizador`, `id_hotel`, `id_tipo_reserva`, `email_cliente`, 
     `fecha_reserva`, `fecha_modificacion`, `id_destino`, 
     `fecha_entrada`, `hora_entrada`, `numero_vuelo_entrada`, `origen_vuelo_entrada`, 
-    `hora_vuelo_salida`, `fecha_vuelo_salida`, `num_viajeros`, `id_vehiculo`
+    `hora_vuelo_salida`, `fecha_vuelo_salida`, `num_viajeros`, `id_vehiculo`, `id_creador`
 ) VALUES
 (
     1, 
@@ -112,7 +112,8 @@ INSERT INTO `transfer_reservas` (
     1, -- 'id_destino' (dónde va) = Hotel UOC Beach
     '2024-03-10', '14:30:00', 'VY1234', 'Londres (LGW)', 
     '2024-03-17 18:00:00', '2024-03-17', 
-    4, 2 -- 4 viajeros, Vehículo 2 (Minivan)
+    4, 2, -- 4 viajeros, Vehículo 2 (Minivan)
+    2
 ),
 (
     2, 
@@ -124,7 +125,8 @@ INSERT INTO `transfer_reservas` (
     4, -- 'id_destino' (dónde va) = Hotel UOC Beach
     '2025-12-25', '22:30:00', 'MS2323', 'Barcelona (BCN)', 
     '2026-01-05 06:00:00', '2026-01-05', 
-    4, 2 -- 4 viajeros, Vehículo 2 (Minivan)
+    4, 2, -- 4 viajeros, Vehículo 2 (Minivan)
+    1
 ),
 (
     3, 
@@ -136,7 +138,8 @@ INSERT INTO `transfer_reservas` (
     3, -- 'id_destino' (dónde va) = Hotel Marítimo Centro
     '2024-03-12', '09:15:00', 'IB5678', 'Madrid (MAD)', 
     '2024-03-15 12:00:00', '2024-03-15', -- Fechas de salida (aunque sea solo entrada, el vuelo de vuelta se puede registrar)
-    2, 1 -- 2 viajeros, Vehículo 1 (Sedan)
+    2, 1, -- 2 viajeros, Vehículo 1 (Sedan)
+    1
 );
 
 -- Reactivar la comprobación de claves foráneas
