@@ -7,6 +7,7 @@
     <style>
         .list-container { max-width: 1200px; margin: 2rem auto; padding: 1rem; background: white; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .btn-back { text-decoration: none; color: #666; margin-right: 15px; }
         .btn-new { background: #28a745; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold; }
         
         /* Estils de la Taula */
@@ -19,7 +20,8 @@
         .badge-ida { background: #17a2b8; color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.8rem; }
         .badge-vuelta { background: #ffc107; color: #333; padding: 3px 8px; border-radius: 10px; font-size: 0.8rem; }
         
-        .actions a { margin-right: 5px; text-decoration: none; font-size: 1.2rem; }
+        .actions a { margin-right: 10px; text-decoration: none; font-size: 1.2rem; transition: transform 0.2s; display: inline-block; }
+        .actions a:hover { transform: scale(1.2); }
     </style>
 </head>
 <body>
@@ -28,13 +30,28 @@
         <div class="top-bar">
             <h1>Gestión de Reservas</h1>
             <div>
-                <a href="/admin/dashboard" class="btn-back" style="margin-right: 10px; color: #666;">Volver</a>
+                <a href="/admin/dashboard" class="btn-back">Volver al Panel</a>
                 <a href="/admin/reserva/nueva" class="btn-new">➕ Nueva Reserva</a>
             </div>
         </div>
 
+        <?php
+        if (isset($_SESSION['success_message'])) {
+            echo '<div style="background:#d4edda; color:#155724; padding:1rem; border-radius:5px; margin-bottom:1rem;">' 
+                 . $_SESSION['success_message'] . 
+                 '</div>';
+            unset($_SESSION['success_message']);
+        }
+        if (isset($_SESSION['error_message'])) {
+            echo '<div style="background:#f8d7da; color:#721c24; padding:1rem; border-radius:5px; margin-bottom:1rem;">' 
+                 . $_SESSION['error_message'] . 
+                 '</div>';
+            unset($_SESSION['error_message']);
+        }
+        ?>
+
         <?php if (empty($reservas)): ?>
-            <p style="text-align: center; color: #666;">No hay reservas registradas todavía.</p>
+            <p style="text-align: center; color: #666; margin-top: 2rem;">No hay reservas registradas todavía.</p>
         <?php else: ?>
             <table>
                 <thead>
@@ -57,10 +74,11 @@
                             <td>
                                 <?php 
                                     if ($r['id_tipo_reserva'] == 1) {
-                                        // Arribada: mostrem data entrada + hora entrada
+                                        // Arribada: mostrem data entrada
+                                        // Retallem la data (YYYY-MM-DD) i l'hora (HH:MM)
                                         echo date('d/m/Y', strtotime($r['fecha_entrada'])) . '<br>' . substr($r['hora_entrada'], 11, 5);
                                     } else {
-                                        // Sortida: mostrem data sortida + hora sortida (o recollida)
+                                        // Sortida: mostrem data sortida
                                         echo date('d/m/Y', strtotime($r['fecha_vuelo_salida'])) . '<br>' . substr($r['hora_vuelo_salida'], 11, 5);
                                     }
                                 ?>
@@ -85,8 +103,15 @@
 
                             <td class="actions">
                                 <a href="/admin/reserva/detalles?loc=<?php echo $r['localizador']; ?>" title="Ver Detalle">👁️</a>
-                                <a href="#" title="Editar" onclick="alert('Próximamente')">✏️</a>
-                                <a href="#" title="Eliminar" onclick="alert('Próximamente')" style="color:red;">🗑️</a>
+                                
+                                <a href="#" title="Editar" onclick="alert('Funcionalidad pendiente de implementar')">✏️</a>
+                                
+                                <a href="/admin/reserva/delete?id=<?php echo $r['id_reserva']; ?>" 
+                                   title="Eliminar" 
+                                   style="color:red;"
+                                   onclick="return confirm('ATENCIÓN: ¿Estás seguro de que quieres cancelar esta reserva permanentemente?');">
+                                   🗑️
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

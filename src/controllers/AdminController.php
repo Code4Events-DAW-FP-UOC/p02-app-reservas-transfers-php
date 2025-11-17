@@ -163,5 +163,27 @@ class AdminController
             exit;
         }
     }
+    
+    // ACCIÓ: ESBORRAR RESERVA
+    public function deleteReserva()
+    {
+        $this->checkAdmin();
+
+        // Agafem l'ID de la URL (?id=XX)
+        $id = $_GET['id'] ?? null;
+
+        if ($id) {
+            $reservaModel = new Reserva($this->pdo);
+            if ($reservaModel->delete($id)) {
+                $_SESSION['success_message'] = "Reserva eliminada correctament.";
+            } else {
+                $_SESSION['error_message'] = "No s'ha pogut eliminar la reserva.";
+            }
+        }
+
+        // Tornem a la llista
+        header('Location: /admin/reservas');
+        exit;
+    }
 }
 ?>

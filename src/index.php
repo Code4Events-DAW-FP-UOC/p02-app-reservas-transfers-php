@@ -58,7 +58,16 @@ switch ($route) {
     case 'logout':
         $authController->logout();
         break;
+    // --- RUTA PERFIL (COMÚ) ---
+    case 'perfil':
+        $authController->showProfile();
+        break;
 
+    case 'perfil/update':
+        if ($method === 'POST') {
+            $authController->updateProfile();
+        }
+        break;
     // --- PANELL ADMINISTRADOR ---
     case 'admin/dashboard':
         // Seguretat: Si no és admin, fora!
@@ -111,6 +120,11 @@ switch ($route) {
 
     case 'mis-reservas':
         $reservaController->listMyReservations();
+        break;
+        
+    // RUTA PER ESBORRAR
+    case 'admin/reserva/delete':
+        $adminController->deleteReserva();
         break;
     // --- ERROR 404 ---
     default:

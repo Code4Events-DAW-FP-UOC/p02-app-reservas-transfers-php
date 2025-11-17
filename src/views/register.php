@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registro - Isla Transfers</title>
-    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="/public/css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -13,29 +13,32 @@
 
         <?php
         if (isset($_SESSION['error_message'])) {
-            // 3. Afegim la classe d'error
             echo '<div class="error-message">' . $_SESSION['error_message'] . '</div>';
             unset($_SESSION['error_message']);
         }
         ?>
 
-        <form action="/register" method="POST">
+        <form action="/register" method="POST" autocomplete="off">
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
             </div>
+            
             <div class="form-group">
                 <label for="apellido1">Primer Apellido:</label>
-                <input type="text" id="apellido1" name="apellido1" required>
+                <input type="text" id="apellido1" name="apellido1" placeholder="Primer apellido" required>
             </div>
+            
             <div class="form-group">
                 <label for="apellido2">Segundo Apellido:</label>
-                <input type="text" id="apellido2" name="apellido2">
+                <input type="text" id="apellido2" name="apellido2" placeholder="Segundo apellido">
             </div>
+
             <div class="form-group">
                 <label for="email">Correo Electrónico:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" placeholder="nombre@correo.com" required>
             </div>
+            
             <div class="form-group">
                 <label for="password">Contraseña:</label>
                 <input type="password" id="password" name="password" required>
@@ -46,18 +49,9 @@
                 <input type="text" id="direccion" name="direccion">
             </div>
             <div class="form-group">
-                <label for="codigoPostal">Código Postal:</label>
-                <input type="text" id="codigoPostal" name="codigoPostal">
-            </div>
-            <div class="form-group">
                 <label for="ciudad">Ciudad:</label>
                 <input type="text" id="ciudad" name="ciudad">
             </div>
-            <div class="form-group">
-                <label for="pais">País:</label>
-                <input type="text" id="pais" name="pais">
-            </div>
-
             <button type="submit">Registrarse</button>
         </form>
         <p>¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>

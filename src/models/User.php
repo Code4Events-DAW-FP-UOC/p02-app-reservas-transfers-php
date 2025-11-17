@@ -63,7 +63,6 @@ class User
 
     /**
      * Comprova el login d'un usuari.
-     * (Esta función ya estaba bien)
      */
     public function login($email, $password)
     {
@@ -75,6 +74,36 @@ class User
         }
 
         return $user;
+    }
+    // 1. Obtenir usuari per ID 
+    public function findById($id)
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM transfer_viajeros WHERE id_viajero = ?');
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // 2. Actualitzar dades 
+    public function update($id, $nombre, $email, $password = null)
+    {
+        try {
+            if ($password) {
+                // Si hi ha contrasenya nova, l'encriptem i actualitzem tot
+                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                $sql = "UPDATE transfer_viajeros SET nombre = ?, email = ?, password = ? WHERE id_viajero = ?";
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute([$nombre, $email, $hashedPassword, $id]);
+            } else {
+                // Si NO hi ha contrasenya, només actualitzem nom i email
+                $sql = "UPDATE transfer_viajeros SET nombre = ?, email = ? WHERE id_viajero = ?";
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute([$nombre, $email, $id]);
+            }
+            return true;
+        } catch (PDOException $e) {
+            error_log("Error update user: " . $e->getMessage());
+            return false;
+        }
     }
 }
 ?>

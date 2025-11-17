@@ -135,5 +135,15 @@ class Reserva
             return [];
         }
     }
+    public function delete($id)
+    {
+        try {
+            $stmt = $this->pdo->prepare("DELETE FROM transfer_reservas WHERE id_reserva = ?");
+            return $stmt->execute([$id]);
+        } catch (PDOException $e) {
+            error_log("Error deleting reserva: " . $e->getMessage());
+            return false;
+        }
+    }
 } 
 ?>
