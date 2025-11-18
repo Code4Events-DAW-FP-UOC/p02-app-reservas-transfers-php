@@ -30,20 +30,20 @@
                 <h5 class="mt-3">Datos de llegada (Aeropuerto → Hotel)</h5>
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label for="fecha_entrada" class="form-label">Día de llegada<span class="text-danger">*</span></label>
+                        <label for="fecha_entrada" class="form-label">Día de llegada</label>
                         <input type="date" class="form-control" name="fecha_entrada" id="fecha_entrada" value="<?= htmlspecialchars($reserva['fecha_entrada'] ?? '') ?>">
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="hora_entrada" class="form-label">Hora de llegada<span class="text-danger">*</span></label>
+                        <label for="hora_entrada" class="form-label">Hora de llegada</label>
                         <input type="time" class="form-control" name="hora_entrada" id="hora_entrada" value="<?= htmlspecialchars($reserva['hora_entrada'] ?? '') ?>">
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="numero_vuelo_entrada" class="form-label">Número de vuelo<span class="text-danger">*</span></label>
+                        <label for="numero_vuelo_entrada" class="form-label">Número de vuelo</label>
                         <input type="text" class="form-control" name="numero_vuelo_entrada" id="numero_vuelo_entrada" value="<?= htmlspecialchars($reserva['numero_vuelo_entrada'] ?? '') ?>">
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="origen_vuelo_entrada" class="form-label">Aeropuerto de origen<span class="text-danger">*</span></label>
+                    <label for="origen_vuelo_entrada" class="form-label">Aeropuerto de origen</label>
                     <input type="text" class="form-control" name="origen_vuelo_entrada" id="origen_vuelo_entrada" value="<?= htmlspecialchars($reserva['origen_vuelo_entrada'] ?? '') ?>">
                 </div>
             </div>
@@ -53,28 +53,28 @@
                 <h5 class="mt-3">Datos de salida (Hotel → Aeropuerto)</h5>
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label for="fecha_vuelo_salida" class="form-label">Día del vuelo<span class="text-danger">*</span></label>
+                        <label for="fecha_vuelo_salida" class="form-label">Día del vuelo</label>
                         <input type="date" class="form-control" name="fecha_vuelo_salida" id="fecha_vuelo_salida" value="<?= htmlspecialchars($reserva['fecha_vuelo_salida'] ?? '') ?>">
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="hora_vuelo_salida" class="form-label">Hora del vuelo<span class="text-danger">*</span></label>
+                        <label for="hora_vuelo_salida" class="form-label">Hora del vuelo</label>
                         <input type="time" class="form-control" name="hora_vuelo_salida" id="hora_vuelo_salida" value="<?= htmlspecialchars($reserva['hora_vuelo_salida'] ?? '') ?>">
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="numero_vuelo_salida" class="form-label">Número de vuelo<span class="text-danger">*</span></label>
+                        <label for="numero_vuelo_salida" class="form-label">Número de vuelo</label>
                         <input type="text" class="form-control" name="numero_vuelo_salida" id="numero_vuelo_salida" value="<?= htmlspecialchars($reserva['numero_vuelo_salida'] ?? '') ?>">
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="hora_entrada_salida" class="form-label">Hora de recogida<span class="text-danger">*</span></label>
+                    <label for="hora_entrada_salida" class="form-label">Hora de recogida</label>
                     <input type="time" class="form-control" name="hora_entrada_salida" id="hora_entrada_salida" value="<?= htmlspecialchars($reserva['hora_entrada_salida'] ?? '') ?>">
                 </div>
             </div>
 
             <!-- Hotel de destino/recogida -->
             <div class="mb-3">
-                <label for="id_hotel" class="form-label">Hotel de destino/recogida<span class="text-danger">*</span></label>
-                <select class="form-select" name="id_hotel" id="id_hotel" required>
+                <label for="id_hotel" class="form-label">Hotel de destino/recogida</label>
+                <select class="form-select" name="id_hotel" id="id_hotel">
                     <option value="">Seleccione hotel...</option>
                     <?php foreach ($hoteles as $hotel): ?>
                         <option value="<?= $hotel['id_hotel'] ?>" <?= ($reserva['id_hotel'] == $hotel['id_hotel'] ? 'selected' : '') ?>>
@@ -86,14 +86,14 @@
 
             <!-- Número de viajeros -->
             <div class="mb-3">
-                <label for="num_viajeros" class="form-label">Número de viajeros<span class="text-danger">*</span></label>
+                <label for="num_viajeros" class="form-label">Número de viajeros</label>
                 <input type="number" min="1" max="8" class="form-control" name="num_viajeros" id="num_viajeros" value="<?= htmlspecialchars($reserva['num_viajeros']) ?>" required>
             </div>
 
             <!-- Vehículo -->
             <div class="mb-3 mt-4">
-                <label for="id_vehiculo" class="form-label">Vehículo<span class="text-danger">*</span></label>
-                <select class="form-select" name="id_vehiculo" id="id_vehiculo" required>
+                <label for="id_vehiculo" class="form-label">Vehículo</label>
+                <select class="form-select" name="id_vehiculo" id="id_vehiculo">
                     <option value="">Seleccione vehículo...</option>
                     <?php foreach ($vehiculos as $vehiculo): ?>
                         <option value="<?= $vehiculo['id_vehiculo'] ?>" <?= ($reserva['id_vehiculo'] == $vehiculo['id_vehiculo'] ? 'selected' : '') ?>>

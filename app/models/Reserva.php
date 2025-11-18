@@ -85,11 +85,21 @@ class Reserva extends Model
      */
     public function update($id, $reserva)
     {
-        // === Validación de datos ===
+        // === Validación de datos ===  
         $this->validar($reserva, true);
 
-        // === Actualización en base de datos ===
         $db = $this->db();
+        $fecha_modificacion = date('Y-m-d H:i:s');
+
+        /** 
+         * Convierte valores vacíos ('', null, 'null') en NULL real para MySQL
+         */
+        $nullSiVacio = function ($v) {
+            if (!isset($v)) return null;
+            if ($v === '') return null;
+            if (strtolower($v) === 'null') return null;
+            return $v;
+        };
 
         $stmt = $db->prepare("UPDATE transfer_reservas SET 
             id_hotel = ?, 
@@ -108,19 +118,19 @@ class Reserva extends Model
         WHERE id_reserva = ?");
 
         return $stmt->execute([
-            nullSiVacio($reserva['id_hotel'] ?? null),
+            $nullSiVacio($reserva['id_hotel'] ?? null),
             $reserva['id_tipo_reserva'],
             $reserva['id_viajero'],
-            $reserva['fecha_modificacion'],
-            $reserva['id_destino'],
-            nullSiVacio($reserva['fecha_entrada'] ?? null),
-            nullSiVacio($reserva['hora_entrada'] ?? null),
-            nullSiVacio($reserva['numero_vuelo_entrada'] ?? null),
-            nullSiVacio($reserva['origen_vuelo_entrada'] ?? null),
-            nullSiVacio($reserva['hora_vuelo_salida'] ?? null),
-            nullSiVacio($reserva['fecha_vuelo_salida'] ?? null),
-            $reserva['num_viajeros'],
-            $reserva['id_vehiculo'],
+            $fecha_modificacion,
+            $nullSiVacio($reserva['id_destino'] ?? null),
+            $nullSiVacio($reserva['fecha_entrada'] ?? null),
+            $nullSiVacio($reserva['hora_entrada'] ?? null),
+            $nullSiVacio($reserva['numero_vuelo_entrada'] ?? null),
+            $nullSiVacio($reserva['origen_vuelo_entrada'] ?? null),
+            $nullSiVacio($reserva['hora_vuelo_salida'] ?? null),
+            $nullSiVacio($reserva['fecha_vuelo_salida'] ?? null),
+            $nullSiVacio($reserva['num_viajeros'] ?? null),
+            $nullSiVacio($reserva['id_vehiculo'] ?? null),
             $id
         ]);
     }
