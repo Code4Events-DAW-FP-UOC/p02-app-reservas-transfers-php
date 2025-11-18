@@ -117,7 +117,15 @@
         if (!entrada || !salida) return;
 
         // La entrada no puede ser anterior a hoy
-        const hoy = new Date().toISOString().split('T')[0];
+        //const hoy = new Date().toISOString().split('T')[0];
+        let hoy_mal = new Date();
+        let hoy_unformat = new Date(hoy_mal.getTime());
+
+        const MS_IN_48_HOURS = 48 * 60 * 60 * 1000;
+        hoy_unformat.setTime(hoy_unformat.getTime() + MS_IN_48_HOURS);
+
+
+        let hoy = hoy_unformat.toISOString().slice(0, 10);
         entrada.min = hoy;
         salida.min = hoy;
 

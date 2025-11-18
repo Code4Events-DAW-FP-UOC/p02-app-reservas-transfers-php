@@ -42,7 +42,7 @@
                             ?>
                         </td>
                         <td>
-                            <a href="/user/verReserva/<?= $reserva['id_reserva'] ?>" class="btn btn-sm btn-outline-primary">
+                            <a href="/user/verDetallesReserva/<?= $reserva['id_reserva'] ?>" class="btn btn-sm btn-outline-primary">
                                 Ver detalles
                             </a>
                         </td>
