@@ -62,6 +62,7 @@ CREATE TABLE `transfer_reservas` (
   `id_hotel` int(11) DEFAULT NULL COMMENT 'Es el hotel que realiza la reserva',
   `id_tipo_reserva` int(11) NOT NULL,
   `id_viajero` int(11) NOT NULL,
+  `id_creador`int(11) NOT NULL,
   `fecha_reserva` datetime NOT NULL,
   `fecha_modificacion` datetime NOT NULL,
   `id_destino` int(11) NOT NULL,
