@@ -1,3 +1,4 @@
+SET NAMES 'utf8mb4';
 
 SET FOREIGN_KEY_CHECKS=0;
 DELETE FROM transfer_reservas;
@@ -15,7 +16,6 @@ ALTER TABLE transfer_vehiculos AUTO_INCREMENT=1;
 ALTER TABLE transfer_tipo_reservas AUTO_INCREMENT=1;
 ALTER TABLE transfer_zonas AUTO_INCREMENT=1;
 SET FOREIGN_KEY_CHECKS=1;
-
 
 INSERT INTO transfer_zonas (descripcion) VALUES
 ('Norte'),
