@@ -7,44 +7,44 @@
         <thead>
             <tr>
                 <th>Localizador</th>
-                <th>Reservo Hotel</th>
                 <th>Fecha</th>
-                <th>Hotel destino</th>
+                <th>Hotel</th>
+                <th>Destino</th>
                 <th>Tipo de reserva</th>
+                <th>Creada por</th>
                 <th>Detalles</th>
             </tr>
         </thead>
         <tbody>
             <?php if (empty($reservas)): ?>
                 <tr>
-                    <td colspan="6" class="text-center">No tienes reservas registradas.</td>
+                    <td colspan="7" class="text-center">No tienes reservas registradas.</td>
                 </tr>
             <?php else: ?>
                 <?php foreach ($reservas as $reserva): ?>
                     <tr>
                         <td><?= htmlspecialchars($reserva['localizador']) ?></td>
-                        <td><?= htmlspecialchars($reserva['hotel_nombre'] ?? '—') ?></td>
                         <td><?= htmlspecialchars($reserva['fecha_reserva']) ?></td>
+                        <td><?= htmlspecialchars($reserva['hotel_nombre'] ?? '—') ?></td>
                         <td><?= htmlspecialchars($reserva['destino_hotel'] ?? '—') ?></td>
                         <td><?= htmlspecialchars($reserva['tipo_reserva_nombre'] ?? '—') ?></td>
                         <td>
-                            <a href="/user/verDetallesReserva/<?= $reserva['id_reserva'] ?>" class="btn btn-sm btn-outline-primary me-1">
+                            <?php
+                            if (empty($reserva['creador_nombre'])) {
+                                echo "—";
+                            } elseif ($reserva['id_creador'] == $_SESSION['user_id']) {
+                                echo "Tú";
+                            } elseif (/*!empty($reserva['creador_rol']) && */$reserva['creador_rol'] == 'admin') {
+                                echo "Administrador";
+                            } else {
+                                echo htmlspecialchars($reserva['creador_nombre'] . ' ' . $reserva['creador_apellido1']);
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <a href="/user/verReserva/<?= $reserva['id_reserva'] ?>" class="btn btn-sm btn-outline-primary">
                                 Ver detalles
                             </a>
-                            <?php
-                            // Solo permitir editar/borrar si la reserva es futura (> 48 horas)
-                            $fechaReserva = new DateTime($reserva['fecha_entrada'] ?? $reserva['fecha_reserva']);
-                            $ahora = new DateTime();
-                            $diferenciaHoras = ($fechaReserva->getTimestamp() - $ahora->getTimestamp()) / 3600;
-                            if ($diferenciaHoras > 48):
-                            ?>
-                                <a href="/user/editarReserva/<?= $reserva['id_reserva'] ?>" class="btn btn-sm btn-primary me-1" title="Editar">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <a href="/user/eliminarReserva/<?= $reserva['id_reserva'] ?>" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('¿Seguro que quieres eliminar la reserva?');">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

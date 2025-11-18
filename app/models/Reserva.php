@@ -49,8 +49,8 @@ class Reserva extends Model
         // === Inserción en base de datos ===
         $db = $this->db();
         $stmt = $db->prepare("INSERT INTO transfer_reservas
-        (localizador, id_hotel, id_tipo_reserva, id_viajero, fecha_reserva, fecha_modificacion, id_destino, fecha_entrada, hora_entrada, numero_vuelo_entrada, origen_vuelo_entrada, hora_vuelo_salida, fecha_vuelo_salida, num_viajeros, id_vehiculo)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        (localizador, id_hotel, id_tipo_reserva, id_viajero, id_creador, fecha_reserva, fecha_modificacion, id_destino, fecha_entrada, hora_entrada, numero_vuelo_entrada, origen_vuelo_entrada, hora_vuelo_salida, fecha_vuelo_salida, num_viajeros, id_vehiculo)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         // Auxiliar local para controlar nulos y vacíos
         $nullSiVacio = function ($valor) {
@@ -62,17 +62,18 @@ class Reserva extends Model
             $nullSiVacio($reserva['id_hotel'] ?? null),
             $reserva['id_tipo_reserva'],
             $reserva['id_viajero'],
+            $reserva['id_creador'], // <--- este es nuevo
             $reserva['fecha_reserva'],
             $reserva['fecha_modificacion'] ?? date('Y-m-d H:i:s'),
-            $reserva['id_destino'] ?? null,
+            $nullSiVacio($reserva['id_destino'] ?? null),
             $nullSiVacio($reserva['fecha_entrada'] ?? null),
             $nullSiVacio($reserva['hora_entrada'] ?? null),
-            $reserva['numero_vuelo_entrada'] ?? null,
-            $reserva['origen_vuelo_entrada'] ?? null,
+            $nullSiVacio($reserva['numero_vuelo_entrada'] ?? null),
+            $nullSiVacio($reserva['origen_vuelo_entrada'] ?? null),
             $nullSiVacio($reserva['hora_vuelo_salida'] ?? null),
             $nullSiVacio($reserva['fecha_vuelo_salida'] ?? null),
-            $reserva['num_viajeros'] ?? 1,
-            $reserva['id_vehiculo'],
+            $nullSiVacio($reserva['num_viajeros'] ?? null),
+            $nullSiVacio($reserva['id_vehiculo'] ?? null),
         ]);
     }
 
@@ -296,11 +297,13 @@ class Reserva extends Model
             SELECT r.*, 
                 h.nombre AS hotel_nombre, 
                 d.nombre AS destino_hotel,
-                t.descripcion AS tipo_reserva_nombre
+                t.descripcion AS tipo_reserva_nombre,
+                c.nombre AS creador_nombre, c.apellido1 AS creador_apellido1, c.rol AS creador_rol
             FROM transfer_reservas r
             LEFT JOIN transfer_hoteles h ON r.id_hotel = h.id_hotel
             LEFT JOIN transfer_hoteles d ON r.id_destino = d.id_hotel
             LEFT JOIN transfer_tipo_reservas t ON r.id_tipo_reserva = t.id_tipo_reserva
+            LEFT JOIN transfer_viajeros c ON r.id_creador = c.id_viajero
             WHERE r.id_viajero = ?
             ORDER BY r.fecha_reserva DESC
         ");

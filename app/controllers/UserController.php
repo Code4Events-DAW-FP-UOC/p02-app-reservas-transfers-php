@@ -201,6 +201,7 @@ class UserController extends Controller
                         'id_tipo_reserva' => $id_tipo_reserva,
                         'id_hotel' => $id_hotel,
                         'id_viajero' => $id_viajero,
+                        'id_creador' => $_SESSION['user_id'],
                         'fecha_reserva' => $fecha_reserva,
                         'fecha_modificacion' => $fecha_modificacion,
                         'fecha_entrada' => $fecha_entrada,
