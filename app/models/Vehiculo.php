@@ -129,4 +129,10 @@ class Vehiculo extends Model
             throw new Exception('La contraseña del conductor es obligatoria');
         }
     }
+    public function countAll()
+    {
+        $db = $this->db();
+        $stmt = $db->query("SELECT COUNT(*) FROM transfer_vehiculos");
+        return $stmt->fetchColumn();
+    }
 }

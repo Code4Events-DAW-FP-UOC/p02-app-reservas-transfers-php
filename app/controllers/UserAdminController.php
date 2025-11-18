@@ -31,7 +31,23 @@ class UserAdminController extends Controller
     public function dashboard()
     {
         $this->requireAdmin();
-        $this->view('userAdmin/dashboard');
+
+        $reservaModel = $this->model('Reserva');
+        $userModel = $this->model('User');
+        $hotelModel = $this->model('Hotel');
+        $vehiculoModel = $this->model('Vehiculo');
+
+        $numReservas = $reservaModel->countAll();
+        $numUsuarios = $userModel->countAll();
+        $numHoteles = $hotelModel->countAll();
+        $numVehiculos = $vehiculoModel->countAll();
+
+        $this->view('userAdmin/dashboard', [
+            'numReservas' => $numReservas,
+            'numUsuarios' => $numUsuarios,
+            'numHoteles' => $numHoteles,
+            'numVehiculos' => $numVehiculos
+        ]);
     }
 
     // ==============================================

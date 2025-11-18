@@ -23,6 +23,9 @@ if (session_status() === PHP_SESSION_NONE) {
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li>
+                            <a class="dropdown-item" href="/user/dashboard">Dashboard</a>
+                        </li>
+                        <li>
                             <?php if ($_SESSION['user_rol'] === 'corporativo'): ?>
                                 <a class="dropdown-item" href="/userCorporativo/editarPerfil">Editar perfil</a>
                             <?php else: ?>

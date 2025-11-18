@@ -235,4 +235,10 @@ class User extends Model
             }
         }
     }
+    public function countAll()
+    {
+        $db = $this->db();
+        $stmt = $db->query("SELECT COUNT(*) FROM transfer_viajeros");
+        return $stmt->fetchColumn();
+    }
 }

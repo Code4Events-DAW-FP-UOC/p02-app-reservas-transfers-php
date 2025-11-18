@@ -414,4 +414,18 @@ class Reserva extends Model
         $stmt->execute([$fechaInicio, $fechaFin, $fechaInicio, $fechaFin]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function countFuturasByViajero($id_viajero)
+    {
+        $db = $this->db();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM transfer_reservas WHERE id_viajero = ? AND fecha_entrada >= CURDATE()");
+        $stmt->execute([$id_viajero]);
+        return $stmt->fetchColumn();
+    }
+
+    public function countAll()
+    {
+        $db = $this->db();
+        $stmt = $db->query("SELECT COUNT(*) FROM transfer_reservas");
+        return $stmt->fetchColumn();
+    }
 }

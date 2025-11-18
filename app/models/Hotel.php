@@ -208,4 +208,10 @@ class Hotel extends Model
             throw new Exception('Ese nombre de usuario ya está registrado por otro hotel');
         }
     }
+    public function countAll()
+    {
+        $db = $this->db();
+        $stmt = $db->query("SELECT COUNT(*) FROM transfer_hoteles");
+        return $stmt->fetchColumn();
+    }
 }
